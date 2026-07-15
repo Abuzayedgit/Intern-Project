@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Team — Internal User Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: {
+            brandBlue:'#00338D', brandLight:'#0073C2', brandTeal:'#00A3A6', brandNavy:'#001a47', brandGray:'#707070'
+        }}}}
+    </script>
+    <style>
+        html,body{ height:100%; }
+        ::-webkit-scrollbar{ width:10px; height:10px; }
+        ::-webkit-scrollbar-thumb{ background:#cbd5e1; border-radius:8px; }
+        ::-webkit-scrollbar-thumb:hover{ background:#94a3b8; }
+        .navitem.active{ background:rgba(255,255,255,0.12); }
+        .navitem.active .navbar-accent{ opacity:1; }
+        .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+    </style>
+</head>
+<body class="h-full bg-slate-100 font-sans text-slate-800">
+<div class="flex h-full overflow-hidden">
+
+    <aside class="w-64 shrink-0 bg-gradient-to-b from-brandBlue to-brandNavy text-white flex flex-col">
+        <div class="px-6 pt-7 pb-6 border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <svg width="42" height="42" viewBox="0 0 48 48" class="shrink-0" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="4" width="18" height="18" rx="4" fill="#ffffff"/>
+                    <rect x="26" y="4" width="18" height="18" rx="4" fill="#00A3A6"/>
+                    <rect x="4" y="26" width="18" height="18" rx="4" fill="#0073C2"/>
+                    <rect x="26" y="26" width="18" height="18" rx="4" fill="#ffffff" fill-opacity="0.55"/>
+                </svg>
+                <div>
+                    <h1 class="text-2xl font-black leading-none tracking-tight">AI Team</h1>
+                    <p class="text-[11px] text-blue-200 mt-1 tracking-wide">Internal User Management</p>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+            <p class="px-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-blue-300/70">Modules</p>
+            <button data-tab="creation" onclick="showTab('creation')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-user-plus"></i></span>
+                <span>Creation</span>
+            </button>
+            <button data-tab="password" onclick="showTab('password')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-key"></i></span>
+                <span>Password</span>
+            </button>
+            <button data-tab="search" onclick="showTab('search')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+                <span>Deep Search</span>
+            </button>
+            <button data-tab="dashboard" onclick="showTab('dashboard')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-gauge-high"></i></span>
+                <span>Dashboard</span>
+            </button>
+            <button data-tab="interns" onclick="showTab('interns')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-user-graduate"></i></span>
+                <span>Interns</span>
+            </button>
+            <button data-tab="links" onclick="showTab('links')" class="navitem group w-full relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-blue-100 hover:bg-white/10 transition">
+                <span class="navbar-accent absolute left-0 top-1/2 -translate-y-1/2 h-6 w-1 rounded-r bg-brandTeal opacity-0 transition"></span>
+                <span class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-brandTeal"><i class="fa-solid fa-diagram-project"></i></span>
+                <span>Links</span>
+            </button>
+        </nav>
+        <div class="px-4 py-4 border-t border-white/10">
+            <div class="flex items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="w-9 h-9 rounded-full object-cover ring-2 ring-white/20">
+                <div class="min-w-0"><p class="text-sm font-semibold truncate">Aisha Khan</p><p class="text-[11px] text-blue-200 truncate">Administrator</p></div>
+                <button class="ml-auto text-blue-200 hover:text-white"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0">
+        <header class="h-16 shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-8">
+            <div class="flex items-center gap-3">
+                <span id="crumbIcon" class="w-8 h-8 rounded-lg bg-blue-50 text-brandBlue flex items-center justify-center"><i class="fa-solid fa-user-plus"></i></span>
+                <div>
+                    <h2 id="crumbTitle" class="font-bold text-slate-800 leading-none">Creation</h2>
+                    <p id="crumbSub" class="text-[11px] text-slate-400 mt-0.5">User provisioning</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="hidden sm:flex items-center gap-2 bg-slate-100 rounded-xl px-3 py-2"><i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i><input class="bg-transparent text-sm focus:outline-none w-40" placeholder="Quick search…"></div>
+                <button class="w-9 h-9 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"><i class="fa-regular fa-bell"></i></button>
+                <button class="w-9 h-9 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition"><i class="fa-solid fa-gear"></i></button>
+            </div>
+        </header>
+
+        <main class="flex-1 relative overflow-hidden">
+            <section id="panel-creation" class="tabpanel absolute inset-0 overflow-auto p-8"></section>
+            <section id="panel-password" class="tabpanel absolute inset-0 overflow-auto p-8 hidden"></section>
+            <section id="panel-search" class="tabpanel absolute inset-0 overflow-auto p-8 hidden"></section>
+            <section id="panel-dashboard" class="tabpanel absolute inset-0 overflow-auto p-8 hidden"></section>
+
+            <section id="panel-interns" class="tabpanel absolute inset-0 hidden bg-slate-50">
+                <div class="h-full flex flex-col">
+                    <div class="h-10 shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-4 text-xs text-slate-500">
+                        <span><i class="fa-solid fa-user-graduate mr-1.5 text-brandBlue"></i> Intern Hub <span class="text-slate-300">· embedded</span></span>
+                        <a href="#" onclick="openInternsNewTab();return false;" class="text-brandBlue font-semibold hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open in new tab</a>
+                    </div>
+                    <div class="relative flex-1">
+                        <iframe id="internsFrame" title="Intern Hub" class="absolute inset-0 w-full h-full border-0" srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot;>
+<head>
+    <meta charset=&quot;UTF-8&quot;>
+    <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
+    <title>Intern Portal - Dashboard</title>
+    <script src=&quot;https://cdn.tailwindcss.com&quot;></script>
+    <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css&quot;>
+    <script src=&quot;https://cdn.jsdelivr.net/npm/chart.js&quot;></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: {
+            kpmgBlue: '#00338D', kpmgLightBlue: '#0073C2', kpmgTeal: '#00A3A6', kpmgGray: '#707070'
+        }}}}
+    </script>
+    <style> html{ scroll-behavior:smooth; } .sec{ scroll-margin-top:120px; } </style>
+</head>
+<body class=&quot;bg-slate-50 font-sans text-slate-800 min-h-screen flex flex-col&quot;>
+
+    <!-- ============ TOP NAV ============ -->
+    <nav class=&quot;bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm&quot;>
+        <div class=&quot;px-6 py-3 flex items-center justify-between&quot;>
+            <div class=&quot;flex items-center space-x-6&quot;>
+                <div class=&quot;text-kpmgBlue font-black text-2xl tracking-wider flex items-center&quot;>INTERN <span class=&quot;text-kpmgLightBlue ml-1&quot;>HUB</span></div>
+                <div class=&quot;hidden md:flex space-x-1&quot;>
+                    <button onclick=&quot;jumpTo('sec-overview')&quot; class=&quot;bg-blue-50 text-kpmgBlue px-4 py-2 rounded-lg font-medium text-sm flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-chart-pie&quot;></i><span>Dashboard</span></button>
+                </div>
+            </div>
+            <div class=&quot;flex items-center space-x-4&quot;>
+                <div class=&quot;relative&quot;>
+                    <button onclick=&quot;toggleStatusMenu(event)&quot; class=&quot;flex items-center space-x-2 pr-2 pl-2.5 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 transition&quot;>
+                        <span id=&quot;statusDot&quot; class=&quot;w-2.5 h-2.5 rounded-full bg-emerald-500&quot;></span>
+                        <span id=&quot;statusLabel&quot; class=&quot;text-xs font-semibold text-slate-600 hidden sm:inline&quot;>Active</span>
+                        <i class=&quot;fa-solid fa-chevron-down text-[10px] text-slate-400&quot;></i>
+                    </button>
+                    <div id=&quot;statusMenu&quot; class=&quot;hidden absolute right-0 mt-2 w-44 bg-white rounded-xl shadow-xl border z-50 py-1&quot;>
+                        <div class=&quot;px-4 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400&quot;>Set your status</div>
+                        <button onclick=&quot;setStatus('active')&quot; class=&quot;w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center space-x-2 text-sm&quot;><span class=&quot;w-2.5 h-2.5 rounded-full bg-emerald-500&quot;></span><span>Active</span></button>
+                        <button onclick=&quot;setStatus('away')&quot; class=&quot;w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center space-x-2 text-sm&quot;><span class=&quot;w-2.5 h-2.5 rounded-full bg-amber-400&quot;></span><span>Away</span></button>
+                        <button onclick=&quot;setStatus('offline')&quot; class=&quot;w-full text-left px-4 py-2 hover:bg-slate-50 flex items-center space-x-2 text-sm&quot;><span class=&quot;w-2.5 h-2.5 rounded-full bg-slate-400&quot;></span><span>Offline</span></button>
+                    </div>
+                </div>
+                <div class=&quot;relative&quot;>
+                    <button onclick=&quot;toggleNotifications(event)&quot; class=&quot;text-slate-400 hover:text-slate-600 relative p-1.5 rounded-full hover:bg-slate-100 transition&quot;><i class=&quot;fa-regular fa-bell text-lg&quot;></i><span id=&quot;notificationBadge&quot; class=&quot;absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full px-1.5 py-0.5&quot;>4</span></button>
+                    <div id=&quot;notificationMenu&quot; class=&quot;hidden absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border z-50&quot;>
+                        <div class=&quot;p-4 border-b font-bold&quot;>Notifications</div>
+                        <div class=&quot;p-3 hover:bg-slate-50 cursor-pointer&quot;>📚 Azure Fundamentals course assigned</div>
+                        <div class=&quot;p-3 hover:bg-slate-50 cursor-pointer&quot;>🏆 Python Certificate approved</div>
+                        <div class=&quot;p-3 hover:bg-slate-50 cursor-pointer&quot;>👨‍🏫 Mentor meeting tomorrow</div>
+                        <div class=&quot;p-3 hover:bg-slate-50 cursor-pointer&quot;>📈 New feedback from your manager</div>
+                    </div>
+                </div>
+                <div class=&quot;relative&quot;>
+                    <button onclick=&quot;toggleProfileMenu(event)&quot; class=&quot;flex items-center space-x-3 pl-2 border-l border-slate-200&quot;>
+                        <img src=&quot;https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;q=80&amp;w=100&quot; class=&quot;w-8 h-8 rounded-full object-cover&quot;>
+                        <div class=&quot;hidden sm:block text-left&quot;><div class=&quot;text-sm font-semibold&quot; id=&quot;navName&quot;>Aisha Khan</div><div class=&quot;text-xs text-slate-400&quot; id=&quot;navRole&quot;>Technology Advisory Intern</div></div>
+                        <i class=&quot;fa-solid fa-chevron-down text-xs text-slate-400&quot;></i>
+                    </button>
+                    <div id=&quot;profileMenu&quot; class=&quot;hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border z-50&quot;>
+                        <button onclick=&quot;jumpTo('sec-profile')&quot; class=&quot;w-full text-left block px-4 py-3 hover:bg-slate-100&quot;>👤 My Profile</button>
+                        <a href=&quot;settings.html&quot; class=&quot;block px-4 py-3 hover:bg-slate-100&quot;>⚙ Settings</a>
+                        <a href=&quot;login.html&quot; class=&quot;block px-4 py-3 hover:bg-slate-100 text-red-600&quot;>🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class=&quot;flex-grow p-6 max-w-7xl w-full mx-auto space-y-10&quot;>
+
+        <!-- ================= OVERVIEW ================= -->
+        <section id=&quot;sec-overview&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;bg-white border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4&quot;>
+                <div><h1 class=&quot;text-2xl font-bold text-slate-900&quot;>Welcome Back, Aisha! 👋</h1><p class=&quot;text-sm text-slate-500 mt-1&quot;>Here's your complete internship snapshot — skills, projects, people, and feedback, all in one place.</p></div>
+                <button onclick=&quot;jumpTo('sec-skills')&quot; class=&quot;bg-kpmgBlue hover:bg-blue-900 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition shadow-sm whitespace-nowrap flex items-center justify-center space-x-2&quot;><i class=&quot;fa-solid fa-plus text-xs&quot;></i> <span>Add Experience/Skill</span></button>
+            </div>
+
+            <!-- STATS BAND -->
+            <div>
+                <h2 class=&quot;text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2&quot;><i class=&quot;fa-solid fa-bolt text-amber-400&quot;></i> Your Stats at a Glance</h2>
+                <div class=&quot;grid grid-cols-2 md:grid-cols-4 gap-4&quot;>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-kpmgTeal to-teal-700&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Skills</span><i class=&quot;fa-solid fa-graduation-cap text-white/50 text-lg&quot;></i></div><p id=&quot;stSkills&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0</p><p id=&quot;stSkillsSub&quot; class=&quot;text-xs text-white/70 mt-1.5&quot;>tracked</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-kpmgBlue to-blue-800&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Avg Proficiency</span><i class=&quot;fa-solid fa-gauge-high text-white/50 text-lg&quot;></i></div><p id=&quot;stAvg&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0%</p><div class=&quot;w-full bg-white/20 rounded-full h-1.5 mt-2.5 overflow-hidden&quot;><div id=&quot;stAvgBar&quot; class=&quot;bg-white h-1.5 rounded-full&quot; style=&quot;width:0%&quot;></div></div></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-kpmgLightBlue to-sky-700&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Active Projects</span><i class=&quot;fa-solid fa-list-check text-white/50 text-lg&quot;></i></div><p id=&quot;stActive&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0</p><p id=&quot;stCompleted&quot; class=&quot;text-xs text-white/70 mt-1.5&quot;>0 completed</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-indigo-500 to-indigo-800&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Hours (7 days)</span><i class=&quot;fa-solid fa-clock text-white/50 text-lg&quot;></i></div><p id=&quot;stHours&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0</p><p id=&quot;stLastIn&quot; class=&quot;text-xs text-white/70 mt-1.5&quot;>No clock-ins</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-amber-500 to-orange-600&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Certifications</span><i class=&quot;fa-solid fa-award text-white/50 text-lg&quot;></i></div><p id=&quot;stCerts&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0</p><p id=&quot;stCertGoal&quot; class=&quot;text-xs text-white/70 mt-1.5&quot;>Goal: 5</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-violet-500 to-purple-800&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Avg Rating</span><i class=&quot;fa-solid fa-star text-white/50 text-lg&quot;></i></div><p id=&quot;stRating&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>—</p><p id=&quot;stReviews&quot; class=&quot;text-xs text-white/70 mt-1.5&quot;>0 reviews</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-rose-500 to-pink-700&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Meetings</span><i class=&quot;fa-regular fa-calendar-check text-white/50 text-lg&quot;></i></div><p id=&quot;stMeetings&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0</p><p class=&quot;text-xs text-white/70 mt-1.5&quot;>booked</p></div>
+                    <div class=&quot;rounded-2xl p-5 text-white shadow-lg bg-gradient-to-br from-emerald-500 to-emerald-800&quot;><div class=&quot;flex items-center justify-between&quot;><span class=&quot;text-[11px] font-bold uppercase tracking-wider text-white/70&quot;>Profile</span><i class=&quot;fa-solid fa-circle-check text-white/50 text-lg&quot;></i></div><p id=&quot;stComplete&quot; class=&quot;text-4xl font-black mt-2 leading-none&quot;>0%</p><p class=&quot;text-xs text-white/70 mt-1.5&quot;>complete</p></div>
+                </div>
+            </div>
+
+            <!-- Attendance + Manager + AI -->
+            <div class=&quot;grid grid-cols-1 lg:grid-cols-3 gap-6&quot;>
+                <div class=&quot;lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6&quot;>
+                    <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col&quot;>
+                        <div class=&quot;flex items-center justify-between mb-4&quot;><h2 class=&quot;font-bold text-slate-800 flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-clock text-kpmgLightBlue&quot;></i> <span>Office Attendance</span></h2><span id=&quot;attendanceState&quot; class=&quot;text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded&quot;>Clocked Out</span></div>
+                        <div class=&quot;text-center py-2&quot;><div id=&quot;liveClock&quot; class=&quot;text-3xl font-extrabold text-slate-800 tabular-nums&quot;>--:--:--</div><div id=&quot;liveDate&quot; class=&quot;text-xs text-slate-400 mt-0.5&quot;>--</div></div>
+                        <div class=&quot;grid grid-cols-2 gap-3 mt-4&quot;>
+                            <button id=&quot;clockInBtn&quot; onclick=&quot;clockIn()&quot; class=&quot;bg-emerald-500 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm py-2.5 rounded-xl transition flex items-center justify-center space-x-2&quot;><i class=&quot;fa-solid fa-right-to-bracket&quot;></i> <span>Clock In</span></button>
+                            <button id=&quot;clockOutBtn&quot; onclick=&quot;clockOut()&quot; class=&quot;bg-rose-500 hover:bg-rose-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm py-2.5 rounded-xl transition flex items-center justify-center space-x-2&quot;><i class=&quot;fa-solid fa-right-from-bracket&quot;></i> <span>Clock Out</span></button>
+                        </div>
+                        <div class=&quot;mt-4 pt-4 border-t border-slate-100 text-xs space-y-1.5&quot;>
+                            <div class=&quot;flex justify-between&quot;><span class=&quot;text-slate-400&quot;>Clock in</span><span id=&quot;inTime&quot; class=&quot;font-semibold text-slate-700&quot;>—</span></div>
+                            <div class=&quot;flex justify-between&quot;><span class=&quot;text-slate-400&quot;>Clock out</span><span id=&quot;outTime&quot; class=&quot;font-semibold text-slate-700&quot;>—</span></div>
+                            <div class=&quot;flex justify-between&quot;><span class=&quot;text-slate-400&quot;>Hours today</span><span id=&quot;hoursToday&quot; class=&quot;font-semibold text-kpmgBlue&quot;>—</span></div>
+                        </div>
+                        <button onclick=&quot;toggleTimesheet()&quot; class=&quot;text-xs text-kpmgBlue font-semibold hover:underline mt-3 text-left&quot;><i class=&quot;fa-regular fa-rectangle-list mr-1&quot;></i> Attendance history</button>
+                        <div id=&quot;timesheet&quot; class=&quot;hidden mt-3 max-h-40 overflow-y-auto text-xs divide-y divide-slate-100 border border-slate-100 rounded-lg&quot;></div>
+                    </div>
+
+                    <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6 flex flex-col&quot;>
+                        <h2 class=&quot;font-bold text-slate-800 flex items-center space-x-2 mb-4&quot;><i class=&quot;fa-solid fa-user-tie text-kpmgTeal&quot;></i> <span>Your Manager</span></h2>
+                        <div class=&quot;flex items-center space-x-3&quot;>
+                            <div class=&quot;relative&quot;><img src=&quot;https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&amp;fit=crop&amp;q=80&amp;w=100&quot; class=&quot;w-14 h-14 rounded-full object-cover&quot;><span class=&quot;absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white bg-emerald-500&quot;></span></div>
+                            <div><p class=&quot;font-bold text-slate-800&quot;>David Chen</p><p class=&quot;text-xs text-slate-500&quot;>Manager · Technology Advisory</p><p class=&quot;text-[11px] font-semibold text-emerald-600 mt-0.5&quot;>Active now</p></div>
+                        </div>
+                        <div class=&quot;mt-4 pt-4 border-t border-slate-100 text-xs space-y-2&quot;>
+                            <div class=&quot;flex items-center text-slate-500&quot;><i class=&quot;fa-regular fa-envelope w-5 text-slate-400&quot;></i> david.chen@internhub.com</div>
+                            <div class=&quot;flex items-center text-slate-500&quot;><i class=&quot;fa-solid fa-users w-5 text-slate-400&quot;></i> You + 4 other interns</div>
+                        </div>
+                        <button onclick=&quot;scrollToBooking()&quot; class=&quot;mt-4 bg-kpmgBlue hover:bg-blue-900 text-white text-sm font-medium py-2.5 rounded-xl transition flex items-center justify-center space-x-2&quot;><i class=&quot;fa-regular fa-calendar-plus&quot;></i> <span>Book a meeting</span></button>
+                    </div>
+                </div>
+
+                <!-- AI Assistant -->
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-md overflow-hidden flex flex-col&quot;>
+                    <div class=&quot;bg-gradient-to-r from-kpmgBlue to-blue-900 px-5 py-4 text-white flex items-center justify-between&quot;>
+                        <div class=&quot;flex items-center space-x-2.5&quot;><div class=&quot;w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-kpmgTeal shadow-inner&quot;><i class=&quot;fa-solid fa-wand-magic-sparkles text-lg animate-pulse&quot;></i></div><div><h2 class=&quot;font-bold text-sm tracking-wide&quot;>My AI Assistant</h2><p class=&quot;text-[11px] text-blue-200 flex items-center&quot;><span class=&quot;w-1.5 h-1.5 bg-emerald-400 rounded-full mr-1&quot;></span> Secured Intranet Node</p></div></div>
+                    </div>
+                    <div class=&quot;p-5 space-y-4 bg-slate-50/50 flex-grow&quot;>
+                        <div class=&quot;flex flex-wrap gap-2&quot; id=&quot;aiChips&quot;>
+                            <button class=&quot;ai-chip text-[11px] bg-white border border-slate-200 hover:border-kpmgBlue/50 text-slate-600 px-2.5 py-1 rounded-full transition&quot;>What should I learn next?</button>
+                            <button class=&quot;ai-chip text-[11px] bg-white border border-slate-200 hover:border-kpmgBlue/50 text-slate-600 px-2.5 py-1 rounded-full transition&quot;>Recommend a mentor</button>
+                            <button class=&quot;ai-chip text-[11px] bg-white border border-slate-200 hover:border-kpmgBlue/50 text-slate-600 px-2.5 py-1 rounded-full transition&quot;>My career path</button>
+                            <button class=&quot;ai-chip text-[11px] bg-white border border-slate-200 hover:border-kpmgBlue/50 text-slate-600 px-2.5 py-1 rounded-full transition&quot;>Did I clock in?</button>
+                        </div>
+                        <div class=&quot;relative bg-white border border-slate-200 rounded-xl p-3 shadow-inner&quot;>
+                            <textarea id=&quot;aiInput&quot; placeholder=&quot;Ask me anything...&quot; class=&quot;w-full text-sm text-slate-700 placeholder-slate-400 bg-transparent resize-none focus:outline-none h-16&quot;></textarea>
+                            <div class=&quot;flex justify-between items-center mt-2 pt-2 border-t border-slate-100&quot;><span class=&quot;text-[11px] text-slate-400&quot;><i class=&quot;fa-solid fa-shield-halved mr-1&quot;></i> Data localized</span><button id=&quot;sendAI&quot; class=&quot;bg-kpmgBlue hover:bg-blue-900 text-white font-medium text-xs px-3 py-1.5 rounded-lg transition shadow-sm flex items-center space-x-1&quot;><span>Send</span> <i class=&quot;fa-solid fa-paper-plane text-[10px]&quot;></i></button></div>
+                        </div>
+                        <div id=&quot;aiResults&quot; class=&quot;space-y-2&quot;><div class=&quot;bg-white border rounded-xl p-4 text-sm text-slate-600&quot;>Ask me about your internship, projects, skills, mentors, connections, feedback, or career path.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active project progress (quick view) -->
+            <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden&quot;>
+                <div class=&quot;px-6 py-4 border-b border-slate-100 flex items-center justify-between&quot;><h2 class=&quot;font-bold text-slate-800 flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-spinner text-kpmgLightBlue&quot;></i> <span>Active Project Progress</span></h2><button onclick=&quot;jumpTo('sec-projects')&quot; class=&quot;text-xs text-kpmgBlue font-semibold hover:underline&quot;>Manage all <i class=&quot;fa-solid fa-chevron-right text-[10px]&quot;></i></button></div>
+                <div id=&quot;dashProjects&quot; class=&quot;p-6 space-y-5&quot;></div>
+            </div>
+        </section>
+
+        <!-- ================= PROFILE ================= -->
+        <section id=&quot;sec-profile&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgTeal rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>My Profile</h2></div>
+            <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden&quot;>
+                <div class=&quot;h-24 bg-gradient-to-r from-kpmgBlue to-blue-900&quot;></div>
+                <div class=&quot;px-6 pb-6&quot;>
+                    <div class=&quot;flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-12&quot;>
+                        <div class=&quot;flex items-end gap-4&quot;>
+                            <div class=&quot;relative&quot;><img src=&quot;https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot; class=&quot;w-24 h-24 rounded-2xl object-cover border-4 border-white shadow-md&quot;><span id=&quot;profStatusDot&quot; class=&quot;absolute bottom-1 right-1 w-5 h-5 rounded-full border-2 border-white bg-emerald-500&quot;></span></div>
+                            <div class=&quot;pb-1&quot;><h1 id=&quot;pName&quot; class=&quot;text-2xl font-bold text-slate-900&quot;>Aisha Khan</h1><p id=&quot;pRole&quot; class=&quot;text-sm text-slate-500&quot;>Technology Advisory Intern</p><p id=&quot;pStatusLabel&quot; class=&quot;text-xs font-semibold text-emerald-600 mt-1&quot;>● Active</p></div>
+                        </div>
+                        <button onclick=&quot;openEdit()&quot; class=&quot;bg-kpmgBlue hover:bg-blue-900 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition shadow-sm whitespace-nowrap flex items-center justify-center space-x-2 self-start sm:self-auto&quot;><i class=&quot;fa-solid fa-pen text-xs&quot;></i><span>Edit Profile</span></button>
+                    </div>
+                    <div class=&quot;grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6&quot;>
+                        <div class=&quot;flex items-center gap-2 text-sm&quot;><i class=&quot;fa-regular fa-envelope text-slate-400 w-4&quot;></i><span id=&quot;pEmail&quot; class=&quot;text-slate-600 truncate&quot;>aisha.khan@internhub.com</span></div>
+                        <div class=&quot;flex items-center gap-2 text-sm&quot;><i class=&quot;fa-solid fa-location-dot text-slate-400 w-4&quot;></i><span id=&quot;pLocation&quot; class=&quot;text-slate-600 truncate&quot;>London, UK</span></div>
+                        <div class=&quot;flex items-center gap-2 text-sm&quot;><i class=&quot;fa-solid fa-user-tie text-slate-400 w-4&quot;></i><span class=&quot;text-slate-600 truncate&quot;>Manager: <b id=&quot;pManager&quot;>David Chen</b></span></div>
+                        <div class=&quot;flex items-center gap-2 text-sm&quot;><i class=&quot;fa-regular fa-calendar text-slate-400 w-4&quot;></i><span id=&quot;pDuration&quot; class=&quot;text-slate-600 truncate&quot;>Internship: 12 weeks</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class=&quot;grid grid-cols-1 lg:grid-cols-2 gap-6&quot;>
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6&quot;>
+                    <h3 class=&quot;font-bold text-slate-800 flex items-center gap-2 mb-3&quot;><i class=&quot;fa-solid fa-id-card text-kpmgTeal&quot;></i> About Me</h3>
+                    <p id=&quot;pBio&quot; class=&quot;text-sm text-slate-600 leading-relaxed&quot;>—</p>
+                    <div class=&quot;mt-4 pt-4 border-t border-slate-100&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 mb-2&quot;>Career Interests</p><div id=&quot;pInterests&quot; class=&quot;flex flex-wrap gap-2&quot;></div></div>
+                    <div class=&quot;mt-4&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 mb-2&quot;>Languages</p><div id=&quot;pLanguages&quot; class=&quot;flex flex-wrap gap-2&quot;></div></div>
+                </div>
+                <div class=&quot;space-y-6&quot;>
+                    <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6&quot;>
+                        <h3 class=&quot;font-bold text-slate-800 flex items-center gap-2 mb-4&quot;><i class=&quot;fa-solid fa-building-columns text-kpmgLightBlue&quot;></i> Academic Background</h3>
+                        <div class=&quot;grid grid-cols-2 gap-4 text-sm&quot;>
+                            <div><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>University</p><p id=&quot;pUni&quot; class=&quot;text-slate-700 font-medium mt-0.5&quot;>—</p></div>
+                            <div><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Degree</p><p id=&quot;pDegree&quot; class=&quot;text-slate-700 font-medium mt-0.5&quot;>—</p></div>
+                            <div><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Graduation</p><p id=&quot;pGrad&quot; class=&quot;text-slate-700 font-medium mt-0.5&quot;>—</p></div>
+                            <div><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>GPA</p><p id=&quot;pGpa&quot; class=&quot;text-slate-700 font-medium mt-0.5&quot;>—</p></div>
+                        </div>
+                    </div>
+                    <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6&quot;><h3 class=&quot;font-bold text-slate-800 flex items-center gap-2 mb-4&quot;><i class=&quot;fa-solid fa-award text-amber-500&quot;></i> Certifications</h3><div id=&quot;certList&quot; class=&quot;space-y-2&quot;></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SKILLS ================= -->
+        <section id=&quot;sec-skills&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center justify-between gap-4 flex-wrap&quot;>
+                <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgTeal rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>My Skills</h2></div>
+                <button onclick=&quot;openSkillModal()&quot; class=&quot;bg-kpmgBlue hover:bg-blue-900 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition shadow-sm flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-plus text-xs&quot;></i><span>Add Skill</span></button>
+            </div>
+            <div class=&quot;flex items-center gap-2 flex-wrap&quot; id=&quot;skillsFilterBar&quot;></div>
+            <div id=&quot;skillsGrid&quot; class=&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;></div>
+            <div id=&quot;skillsEmpty&quot; class=&quot;hidden bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center&quot;><i class=&quot;fa-solid fa-layer-group text-3xl text-slate-300&quot;></i><p class=&quot;text-slate-500 mt-3 font-medium&quot;>No skills yet.</p><button onclick=&quot;openSkillModal()&quot; class=&quot;mt-3 text-kpmgBlue font-semibold hover:underline&quot;>+ Add your first skill</button></div>
+        </section>
+
+        <!-- ================= PROJECTS ================= -->
+        <section id=&quot;sec-projects&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center justify-between gap-4 flex-wrap&quot;>
+                <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgLightBlue rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>Projects</h2></div>
+                <button onclick=&quot;openProjectModal()&quot; class=&quot;bg-kpmgBlue hover:bg-blue-900 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition shadow-sm flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-plus text-xs&quot;></i><span>Add Project</span></button>
+            </div>
+            <div class=&quot;flex items-center gap-2 flex-wrap&quot; id=&quot;projectsFilterBar&quot;></div>
+            <div id=&quot;projectsList&quot; class=&quot;grid grid-cols-1 lg:grid-cols-2 gap-4&quot;></div>
+            <div id=&quot;projectsEmpty&quot; class=&quot;hidden bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center&quot;><i class=&quot;fa-solid fa-folder-open text-3xl text-slate-300&quot;></i><p class=&quot;text-slate-500 mt-3 font-medium&quot;>No projects yet.</p><button onclick=&quot;openProjectModal()&quot; class=&quot;mt-3 text-kpmgBlue font-semibold hover:underline&quot;>+ Add your first project</button></div>
+        </section>
+
+        <!-- ================= MEETINGS ================= -->
+        <section id=&quot;sec-meetings&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgBlue rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>Book a Meeting</h2></div>
+            <div id=&quot;bookingSection&quot; class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden&quot;>
+                <div class=&quot;px-6 py-4 border-b border-slate-100 flex items-center justify-between&quot;><h3 class=&quot;font-bold text-slate-800 flex items-center space-x-2&quot;><i class=&quot;fa-regular fa-calendar-check text-kpmgBlue&quot;></i> <span>Schedule with a manager or mentor</span></h3><span class=&quot;text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded&quot;>Active only</span></div>
+                <div class=&quot;p-6 grid grid-cols-1 lg:grid-cols-2 gap-6&quot;>
+                    <div class=&quot;space-y-5&quot;>
+                        <div><label class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2&quot;>1. Choose who to meet</label><div id=&quot;managerList&quot; class=&quot;grid grid-cols-1 sm:grid-cols-2 gap-3&quot;></div></div>
+                        <div><label class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2&quot;>2. Pick a day</label><div id=&quot;dayList&quot; class=&quot;flex gap-2 overflow-x-auto pb-1&quot;></div></div>
+                        <div><label class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2&quot;>3. Pick a time slot</label><div id=&quot;slotList&quot; class=&quot;grid grid-cols-3 sm:grid-cols-4 gap-2&quot;></div></div>
+                        <button id=&quot;confirmBookingBtn&quot; onclick=&quot;confirmBooking()&quot; class=&quot;w-full bg-kpmgBlue hover:bg-blue-900 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-sm py-3 rounded-xl transition flex items-center justify-center space-x-2&quot;><i class=&quot;fa-solid fa-check&quot;></i> <span>Confirm Booking</span></button>
+                    </div>
+                    <div><label class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2&quot;>Your upcoming meetings</label><div id=&quot;bookingsList&quot; class=&quot;space-y-2&quot;></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONNECTIONS ================= -->
+        <section id=&quot;sec-connections&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgTeal rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>Connections Hub</h2></div>
+            <p class=&quot;text-sm text-slate-500 -mt-3&quot;>Discover the right people across the firm. Search by department, explore profiles, and request a coffee chat.</p>
+            <div class=&quot;bg-gradient-to-r from-kpmgBlue to-blue-900 rounded-2xl shadow-md p-6 text-white&quot;>
+                <div class=&quot;flex items-center gap-2 mb-1&quot;><i class=&quot;fa-solid fa-wand-magic-sparkles text-kpmgTeal&quot;></i><h3 class=&quot;font-bold&quot;>Suggested for you</h3></div>
+                <p id=&quot;aiSuggestNote&quot; class=&quot;text-xs text-blue-200 mb-4&quot;>Matched to your interests</p>
+                <div id=&quot;aiSuggestions&quot; class=&quot;grid grid-cols-1 sm:grid-cols-3 gap-3&quot;></div>
+            </div>
+            <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-4 flex flex-col sm:flex-row gap-3&quot;>
+                <div class=&quot;relative flex-grow&quot;><i class=&quot;fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm&quot;></i><input id=&quot;searchInput&quot; type=&quot;text&quot; placeholder=&quot;Search by name, role, skill…&quot; oninput=&quot;renderDirectory()&quot; class=&quot;w-full border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-kpmgBlue/30 focus:border-kpmgBlue&quot;></div>
+                <select id=&quot;deptFilter&quot; onchange=&quot;renderDirectory()&quot; class=&quot;border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-kpmgBlue/30 focus:border-kpmgBlue&quot;></select>
+            </div>
+            <div id=&quot;directory&quot; class=&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4&quot;></div>
+            <div id=&quot;dirEmpty&quot; class=&quot;hidden bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center&quot;><i class=&quot;fa-solid fa-user-slash text-3xl text-slate-300&quot;></i><p class=&quot;text-slate-500 mt-3 font-medium&quot;>No employees match your search.</p></div>
+        </section>
+
+        <!-- ================= FEEDBACK (read-only) ================= -->
+        <section id=&quot;sec-feedback&quot; class=&quot;sec space-y-6&quot;>
+            <div class=&quot;flex items-center gap-3&quot;><div class=&quot;w-1.5 h-7 bg-kpmgLightBlue rounded-full&quot;></div><h2 class=&quot;text-xl font-bold text-slate-900&quot;>Manager Feedback</h2></div>
+            <div class=&quot;bg-blue-50 border border-blue-100 rounded-xl p-3 flex items-center gap-2 text-xs text-kpmgBlue -mt-3&quot;><i class=&quot;fa-solid fa-lock&quot;></i> Feedback is submitted by your managers after each project. As an intern, this view is read-only — you can't rate managers.</div>
+            <div class=&quot;grid grid-cols-2 sm:grid-cols-4 gap-4&quot;>
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl p-4 shadow-sm&quot;><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Avg. Rating</p><p id=&quot;statAvg&quot; class=&quot;text-2xl font-extrabold text-kpmgBlue mt-1&quot;>—</p></div>
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl p-4 shadow-sm&quot;><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Reviews</p><p id=&quot;statCount&quot; class=&quot;text-2xl font-extrabold text-slate-800 mt-1&quot;>0</p></div>
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl p-4 shadow-sm&quot;><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Projects Reviewed</p><p id=&quot;statProjects&quot; class=&quot;text-2xl font-extrabold text-kpmgTeal mt-1&quot;>0</p></div>
+                <div class=&quot;bg-white border border-slate-200 rounded-2xl p-4 shadow-sm&quot;><p class=&quot;text-xs text-slate-400 font-semibold uppercase tracking-wider&quot;>Trend</p><p id=&quot;statTrend&quot; class=&quot;text-2xl font-extrabold text-emerald-600 mt-1&quot;>—</p></div>
+            </div>
+            <div class=&quot;bg-gradient-to-r from-kpmgBlue to-blue-900 rounded-2xl shadow-md p-6 text-white&quot;>
+                <div class=&quot;flex items-center gap-2 mb-3&quot;><i class=&quot;fa-solid fa-wand-magic-sparkles text-kpmgTeal&quot;></i><h3 class=&quot;font-bold&quot;>AI Feedback Summary</h3></div>
+                <div id=&quot;aiSummary&quot; class=&quot;grid grid-cols-1 md:grid-cols-2 gap-4&quot;></div>
+            </div>
+            <div><h3 class=&quot;font-bold text-slate-800 flex items-center gap-2 mb-3&quot;><i class=&quot;fa-solid fa-clock-rotate-left text-kpmgGray&quot;></i> Feedback History</h3><div id=&quot;history&quot; class=&quot;space-y-4&quot;></div><div id=&quot;historyEmpty&quot; class=&quot;hidden bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center&quot;><i class=&quot;fa-regular fa-comments text-3xl text-slate-300&quot;></i><p class=&quot;text-slate-500 mt-3 font-medium&quot;>No feedback yet. Your managers' reviews will appear here.</p></div></div>
+        </section>
+
+        <!-- Websites -->
+        <section class=&quot;sec&quot;>
+            <div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden&quot;>
+                <div class=&quot;px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50&quot;><h3 class=&quot;font-bold text-slate-800 text-sm flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-network-wired text-kpmgLightBlue&quot;></i> <span>Intern Websites - Tab A</span></h3><span class=&quot;text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-200 px-1.5 py-0.5 rounded&quot;>Azure Mapping</span></div>
+                <div class=&quot;grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-slate-100&quot;>
+                    <a href=&quot;#&quot; class=&quot;p-4 flex items-center justify-between hover:bg-slate-50 transition group&quot;><div class=&quot;flex items-center space-x-3 min-w-0&quot;><div class=&quot;w-8 h-8 rounded-lg bg-blue-50 text-kpmgBlue flex items-center justify-center text-sm&quot;><i class=&quot;fa-solid fa-globe&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;text-xs font-semibold text-slate-800 truncate&quot;>Internal Portal</p><p class=&quot;text-[10px] text-emerald-600 font-medium&quot;>prod</p></div></div></a>
+                    <a href=&quot;#&quot; class=&quot;p-4 flex items-center justify-between hover:bg-slate-50 transition group&quot;><div class=&quot;flex items-center space-x-3 min-w-0&quot;><div class=&quot;w-8 h-8 rounded-lg bg-teal-50 text-kpmgTeal flex items-center justify-center text-sm&quot;><i class=&quot;fa-solid fa-gauge-high&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;text-xs font-semibold text-slate-800 truncate&quot;>Project Dashboard</p><p class=&quot;text-[10px] text-emerald-600 font-medium&quot;>dev</p></div></div></a>
+                    <a href=&quot;#&quot; class=&quot;p-4 flex items-center justify-between hover:bg-slate-50 transition group&quot;><div class=&quot;flex items-center space-x-3 min-w-0&quot;><div class=&quot;w-8 h-8 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center text-sm&quot;><i class=&quot;fa-solid fa-compass&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;text-xs font-semibold text-slate-800 truncate&quot;>Research Hub</p><p class=&quot;text-[10px] text-slate-400 font-medium&quot;>offline</p></div></div></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class=&quot;bg-white border-t border-slate-200 py-4 px-6 text-center text-xs text-slate-400 mt-12&quot;>
+        <div class=&quot;max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2&quot;><p>&amp;copy; 2026 Intern Hub. All rights reserved. Confidential Internal Intranet.</p><div class=&quot;space-x-4&quot;><a href=&quot;#&quot; class=&quot;hover:underline&quot;>Privacy Policy</a><a href=&quot;#&quot; class=&quot;hover:underline&quot;>Terms of Use</a></div></div>
+    </footer>
+
+    <!-- ============ MODALS ============ -->
+    <div id=&quot;editModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4 overflow-y-auto&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden my-8&quot;>
+            <div class=&quot;px-6 py-4 border-b border-slate-100 flex items-center justify-between&quot;><h3 class=&quot;font-bold text-slate-800&quot;>Edit Profile</h3><button onclick=&quot;closeEdit()&quot; class=&quot;text-slate-400 hover:text-slate-600&quot;><i class=&quot;fa-solid fa-xmark&quot;></i></button></div>
+            <div class=&quot;p-6 space-y-4 max-h-[70vh] overflow-y-auto&quot;>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Full name</label><input id=&quot;eName&quot; class=&quot;inp&quot;></div><div><label class=&quot;lbl&quot;>Role / Title</label><input id=&quot;eRole&quot; class=&quot;inp&quot;></div></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Email</label><input id=&quot;eEmail&quot; class=&quot;inp&quot;></div><div><label class=&quot;lbl&quot;>Location</label><input id=&quot;eLocation&quot; class=&quot;inp&quot;></div></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Manager</label><input id=&quot;eManager&quot; class=&quot;inp&quot;></div><div><label class=&quot;lbl&quot;>Internship length</label><input id=&quot;eDuration&quot; class=&quot;inp&quot; placeholder=&quot;e.g. 12 weeks&quot;></div></div>
+                <div><label class=&quot;lbl&quot;>Bio</label><textarea id=&quot;eBio&quot; rows=&quot;3&quot; class=&quot;inp resize-none&quot;></textarea></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>University</label><input id=&quot;eUni&quot; class=&quot;inp&quot;></div><div><label class=&quot;lbl&quot;>Degree</label><input id=&quot;eDegree&quot; class=&quot;inp&quot;></div></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Expected graduation</label><input id=&quot;eGrad&quot; class=&quot;inp&quot; placeholder=&quot;e.g. 2027&quot;></div><div><label class=&quot;lbl&quot;>GPA</label><input id=&quot;eGpa&quot; class=&quot;inp&quot; placeholder=&quot;e.g. 3.8/4.0&quot;></div></div>
+                <div><label class=&quot;lbl&quot;>Career interests <span class=&quot;text-slate-300 normal-case font-normal&quot;>(comma separated)</span></label><input id=&quot;eInterests&quot; class=&quot;inp&quot;></div>
+                <div><label class=&quot;lbl&quot;>Languages <span class=&quot;text-slate-300 normal-case font-normal&quot;>(comma separated)</span></label><input id=&quot;eLanguages&quot; class=&quot;inp&quot;></div>
+                <div><label class=&quot;lbl&quot;>Certifications <span class=&quot;text-slate-300 normal-case font-normal&quot;>(one per line — &quot;Name — Issuer, Year&quot;)</span></label><textarea id=&quot;eCerts&quot; rows=&quot;4&quot; class=&quot;inp resize-none&quot;></textarea></div>
+            </div>
+            <div class=&quot;px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3&quot;><button onclick=&quot;closeEdit()&quot; class=&quot;px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-xl transition&quot;>Cancel</button><button onclick=&quot;saveProfile()&quot; class=&quot;px-4 py-2 text-sm font-semibold text-white bg-kpmgBlue hover:bg-blue-900 rounded-xl transition&quot;>Save Changes</button></div>
+        </div>
+    </div>
+
+    <div id=&quot;skillModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden&quot;>
+            <div class=&quot;px-6 py-4 border-b border-slate-100 flex items-center justify-between&quot;><h3 id=&quot;skillModalTitle&quot; class=&quot;font-bold text-slate-800&quot;>Add Skill</h3><button onclick=&quot;closeSkillModal()&quot; class=&quot;text-slate-400 hover:text-slate-600&quot;><i class=&quot;fa-solid fa-xmark&quot;></i></button></div>
+            <div class=&quot;p-6 space-y-4&quot;>
+                <input type=&quot;hidden&quot; id=&quot;skillId&quot;>
+                <div><label class=&quot;lbl&quot;>Skill name</label><input id=&quot;skillName&quot; type=&quot;text&quot; placeholder=&quot;e.g. Python&quot; class=&quot;inp&quot;><p id=&quot;skillNameError&quot; class=&quot;hidden text-xs text-rose-500 mt-1&quot;>Please enter a skill name.</p></div>
+                <div><label class=&quot;lbl&quot;>Category</label><select id=&quot;skillCategory&quot; class=&quot;inp bg-white&quot;><option>Programming</option><option>Cloud</option><option>Data &amp;amp; Analytics</option><option>Frameworks</option><option>Tools</option><option>Languages</option><option>Soft Skills</option><option>Other</option></select></div>
+                <div><label class=&quot;lbl&quot;>Proficiency: <span id=&quot;skProfValue&quot; class=&quot;text-kpmgBlue&quot;>70%</span> · <span id=&quot;skProfLabel&quot; class=&quot;text-slate-500&quot;>Advanced</span></label><input id=&quot;skillProf&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;70&quot; class=&quot;w-full accent-kpmgBlue&quot; oninput=&quot;updateProfLabel()&quot;><div class=&quot;flex justify-between text-[10px] text-slate-400 mt-1&quot;><span>Beginner</span><span>Intermediate</span><span>Advanced</span><span>Expert</span></div></div>
+            </div>
+            <div class=&quot;px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3&quot;><button onclick=&quot;closeSkillModal()&quot; class=&quot;px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-xl transition&quot;>Cancel</button><button onclick=&quot;saveSkill()&quot; class=&quot;px-4 py-2 text-sm font-semibold text-white bg-kpmgBlue hover:bg-blue-900 rounded-xl transition&quot;>Save Skill</button></div>
+        </div>
+    </div>
+    <div id=&quot;skillConfirmModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center&quot;><div class=&quot;w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-3&quot;><i class=&quot;fa-solid fa-trash&quot;></i></div><p class=&quot;font-semibold text-slate-800&quot;>Remove this skill?</p><p id=&quot;skillConfirmName&quot; class=&quot;text-sm text-slate-500 mt-1&quot;></p><div class=&quot;flex gap-3 mt-5&quot;><button onclick=&quot;closeSkillConfirm()&quot; class=&quot;flex-1 px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition&quot;>Cancel</button><button onclick=&quot;doDeleteSkill()&quot; class=&quot;flex-1 px-4 py-2 text-sm font-semibold text-white bg-rose-500 hover:bg-rose-600 rounded-xl transition&quot;>Remove</button></div></div>
+    </div>
+
+    <div id=&quot;projectModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4 overflow-y-auto&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden my-8&quot;>
+            <div class=&quot;px-6 py-4 border-b border-slate-100 flex items-center justify-between&quot;><h3 id=&quot;projectModalTitle&quot; class=&quot;font-bold text-slate-800&quot;>Add Project</h3><button onclick=&quot;closeProjectModal()&quot; class=&quot;text-slate-400 hover:text-slate-600&quot;><i class=&quot;fa-solid fa-xmark&quot;></i></button></div>
+            <div class=&quot;p-6 space-y-4 max-h-[70vh] overflow-y-auto&quot;>
+                <input type=&quot;hidden&quot; id=&quot;projId&quot;>
+                <div><label class=&quot;lbl&quot;>Project name</label><input id=&quot;projName&quot; type=&quot;text&quot; placeholder=&quot;e.g. Client Onboarding Dashboard&quot; class=&quot;inp&quot;><p id=&quot;projNameError&quot; class=&quot;hidden text-xs text-rose-500 mt-1&quot;>Please enter a project name.</p></div>
+                <div><label class=&quot;lbl&quot;>Description</label><textarea id=&quot;projDesc&quot; rows=&quot;3&quot; placeholder=&quot;What is this project about? Your role, goals, outcomes…&quot; class=&quot;inp resize-none&quot;></textarea></div>
+                <div><label class=&quot;lbl&quot;>Tech / Tools <span class=&quot;text-slate-300 normal-case font-normal&quot;>(comma separated)</span></label><input id=&quot;projTech&quot; type=&quot;text&quot; placeholder=&quot;e.g. React, Node.js, SQL&quot; class=&quot;inp&quot;></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Start date</label><input id=&quot;projStart&quot; type=&quot;date&quot; class=&quot;inp&quot;></div><div><label class=&quot;lbl&quot;>Due date</label><input id=&quot;projDue&quot; type=&quot;date&quot; class=&quot;inp&quot;></div></div>
+                <div class=&quot;grid grid-cols-2 gap-4&quot;><div><label class=&quot;lbl&quot;>Status</label><select id=&quot;projStatus&quot; class=&quot;inp bg-white&quot;><option value=&quot;Active&quot;>Active</option><option value=&quot;On Hold&quot;>On Hold</option><option value=&quot;Completed&quot;>Completed</option></select></div><div><label class=&quot;lbl&quot;>Progress: <span id=&quot;projProgValue&quot; class=&quot;text-kpmgBlue&quot;>50%</span></label><input id=&quot;projProgress&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;100&quot; value=&quot;50&quot; class=&quot;w-full accent-kpmgBlue mt-2.5&quot; oninput=&quot;document.getElementById('projProgValue').textContent=this.value+'%'&quot;></div></div>
+                <div><label class=&quot;lbl&quot;>Current task <span class=&quot;text-slate-300 normal-case font-normal&quot;>(optional)</span></label><input id=&quot;projTask&quot; type=&quot;text&quot; placeholder=&quot;e.g. Input Form Component&quot; class=&quot;inp&quot;></div>
+            </div>
+            <div class=&quot;px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3&quot;><button onclick=&quot;closeProjectModal()&quot; class=&quot;px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-xl transition&quot;>Cancel</button><button onclick=&quot;saveProject()&quot; class=&quot;px-4 py-2 text-sm font-semibold text-white bg-kpmgBlue hover:bg-blue-900 rounded-xl transition&quot;>Save Project</button></div>
+        </div>
+    </div>
+    <div id=&quot;projectConfirmModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 text-center&quot;><div class=&quot;w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-3&quot;><i class=&quot;fa-solid fa-trash&quot;></i></div><p class=&quot;font-semibold text-slate-800&quot;>Remove this project?</p><p id=&quot;projectConfirmName&quot; class=&quot;text-sm text-slate-500 mt-1&quot;></p><div class=&quot;flex gap-3 mt-5&quot;><button onclick=&quot;closeProjectConfirm()&quot; class=&quot;flex-1 px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition&quot;>Cancel</button><button onclick=&quot;doDeleteProject()&quot; class=&quot;flex-1 px-4 py-2 text-sm font-semibold text-white bg-rose-500 hover:bg-rose-600 rounded-xl transition&quot;>Remove</button></div></div>
+    </div>
+
+    <div id=&quot;empModal&quot; class=&quot;hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4 overflow-y-auto&quot;>
+        <div class=&quot;bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden my-8&quot;>
+            <div class=&quot;h-20 bg-gradient-to-r from-kpmgBlue to-blue-900 relative&quot;><button onclick=&quot;closeEmp()&quot; class=&quot;absolute top-3 right-3 text-white/80 hover:text-white&quot;><i class=&quot;fa-solid fa-xmark&quot;></i></button></div>
+            <div class=&quot;px-6 pb-6 -mt-10&quot;>
+                <img id=&quot;empAvatar&quot; src=&quot;&quot; class=&quot;w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-md&quot;>
+                <h3 id=&quot;empName&quot; class=&quot;text-xl font-bold text-slate-900 mt-2&quot;></h3>
+                <p id=&quot;empRole&quot; class=&quot;text-sm text-slate-500&quot;></p>
+                <div id=&quot;empMeta&quot; class=&quot;flex flex-wrap gap-3 mt-3 text-xs text-slate-500&quot;></div>
+                <p id=&quot;empBio&quot; class=&quot;text-sm text-slate-600 mt-4 leading-relaxed&quot;></p>
+                <div class=&quot;mt-4&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 mb-2&quot;>Skills</p><div id=&quot;empSkills&quot; class=&quot;flex flex-wrap gap-2&quot;></div></div>
+                <div class=&quot;mt-3&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 mb-2&quot;>Interests</p><div id=&quot;empInterests&quot; class=&quot;flex flex-wrap gap-2&quot;></div></div>
+                <div class=&quot;mt-5 pt-5 border-t border-slate-100&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-slate-400 mb-2&quot;>Request a coffee chat ☕</p><div class=&quot;grid grid-cols-2 gap-3&quot;><a id=&quot;empOutlook&quot; href=&quot;#&quot; target=&quot;_blank&quot; class=&quot;bg-[#0F6CBD] hover:brightness-110 text-white text-sm font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2&quot;><i class=&quot;fa-solid fa-envelope&quot;></i> Outlook</a><a id=&quot;empTeams&quot; href=&quot;#&quot; target=&quot;_blank&quot; class=&quot;bg-[#5059C9] hover:brightness-110 text-white text-sm font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2&quot;><i class=&quot;fa-solid fa-users&quot;></i> Teams</a></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id=&quot;toast&quot; class=&quot;hidden fixed bottom-6 right-6 z-[80] bg-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2&quot;></div>
+
+    <script>
+        document.querySelectorAll('.inp').forEach(el=>el.className=(el.className.replace('inp','')+' w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-kpmgBlue/30 focus:border-kpmgBlue').trim());
+        document.querySelectorAll('.lbl').forEach(el=>el.className=(el.className.replace('lbl','')+' text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5').trim());
+    </script>
+    <script>
+    /* ================= SHARED HELPERS ================= */
+    function store(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+    function load(k,f){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):f; }catch(e){ return f; } }
+    function uid(p){ return (p||&quot;id&quot;)+&quot;_&quot;+Date.now()+&quot;_&quot;+Math.floor(Math.random()*1000); }
+    function esc(s){ return (s||&quot;&quot;).replace(/&amp;/g,&quot;&amp;amp;&quot;).replace(/</g,&quot;&amp;lt;&quot;).replace(/>/g,&quot;&amp;gt;&quot;); }
+    function toast(msg, icon=&quot;fa-circle-check&quot;){ const t=document.getElementById(&quot;toast&quot;); t.innerHTML=`<i class=&quot;fa-solid ${icon} text-emerald-400&quot;></i><span>${msg}</span>`; t.classList.remove(&quot;hidden&quot;); clearTimeout(window._t); window._t=setTimeout(()=>t.classList.add(&quot;hidden&quot;),3000); }
+    function todayKey(d=new Date()){ return d.toISOString().slice(0,10); }
+    function fmtTime(ts){ return new Date(ts).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+    function fmtTimeSec(d){ return d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+    function fmtDateShort(d){ return d ? new Date(d+&quot;T00:00:00&quot;).toLocaleDateString([], {weekday:'short',month:'short',day:'numeric'}) : &quot;—&quot;; }
+    function fmtDateFull(d){ return d ? new Date(d+&quot;T00:00:00&quot;).toLocaleDateString([], {month:'short',day:'numeric',year:'numeric'}) : &quot;—&quot;; }
+    function hoursBetween(a,b){ return ((b-a)/3600000).toFixed(2)+&quot; h&quot;; }
+    const STATUS_STYLES = { active:{dot:&quot;bg-emerald-500&quot;,label:&quot;Active&quot;,text:&quot;text-emerald-600&quot;}, away:{dot:&quot;bg-amber-400&quot;,label:&quot;Away&quot;,text:&quot;text-amber-600&quot;}, offline:{dot:&quot;bg-slate-400&quot;,label:&quot;Offline&quot;,text:&quot;text-slate-500&quot;} };
+
+    /* ================= DATA ================= */
+    const DEFAULT_PROFILE = { name:&quot;Aisha Khan&quot;, role:&quot;Technology Advisory Intern&quot;, email:&quot;aisha.khan@internhub.com&quot;, location:&quot;London, UK&quot;, manager:&quot;David Chen&quot;, duration:&quot;12 weeks&quot;, bio:&quot;Second-year Computer Science student passionate about cloud, data engineering, and applied AI. Currently interning with the Technology Advisory team, building internal tools and delivering client-facing solutions.&quot;, uni:&quot;Imperial College London&quot;, degree:&quot;BSc Computer Science&quot;, grad:&quot;2027&quot;, gpa:&quot;3.8 / 4.0&quot;, interests:[&quot;Cloud&quot;,&quot;Data Engineering&quot;,&quot;AI / ML&quot;,&quot;Consulting&quot;], languages:[&quot;English&quot;,&quot;Urdu&quot;,&quot;French&quot;], certs:[&quot;Python (PCEP) — Python Institute, 2025&quot;,&quot;SQL Fundamentals — DataCamp, 2025&quot;,&quot;Git &amp; GitHub Basics — Coursera, 2024&quot;], certGoal:5 };
+    function getProfile(){ let p=load(&quot;intern_profile&quot;,null); if(p===null){ p=DEFAULT_PROFILE; store(&quot;intern_profile&quot;,p);} return p; }
+    function setProfile(p){ store(&quot;intern_profile&quot;,p); }
+    const DEFAULT_SKILLS = [ {id:uid(&quot;sk&quot;),name:&quot;Python&quot;,category:&quot;Programming&quot;,prof:90}, {id:uid(&quot;sk&quot;),name:&quot;SQL&quot;,category:&quot;Data &amp; Analytics&quot;,prof:80}, {id:uid(&quot;sk&quot;),name:&quot;Node.js&quot;,category:&quot;Frameworks&quot;,prof:75}, {id:uid(&quot;sk&quot;),name:&quot;Azure&quot;,category:&quot;Cloud&quot;,prof:74}, {id:uid(&quot;sk&quot;),name:&quot;React&quot;,category:&quot;Frameworks&quot;,prof:62} ];
+    function getSkills(){ let s=load(&quot;intern_skills&quot;,null); if(s===null){ s=DEFAULT_SKILLS; store(&quot;intern_skills&quot;,s);} return s; }
+    function setSkills(s){ store(&quot;intern_skills&quot;,s); }
+    const DEFAULT_PROJECTS = [ {id:uid(&quot;pr&quot;),name:&quot;Global Web Audit&quot;,desc:&quot;Auditing the firm's global web properties for performance, accessibility, and data integrity. Reviewing database schemas and query performance.&quot;,tech:[&quot;Node.js&quot;,&quot;SQL&quot;],start:&quot;2026-05-01&quot;,due:&quot;2026-08-15&quot;,status:&quot;Active&quot;,progress:75,task:&quot;DB Schema Review&quot;}, {id:uid(&quot;pr&quot;),name:&quot;Client Onboarding Dashboard&quot;,desc:&quot;Building a React dashboard that streamlines new client onboarding, with dynamic forms and validation.&quot;,tech:[&quot;React&quot;,&quot;Tailwind&quot;],start:&quot;2026-06-10&quot;,due:&quot;2026-09-01&quot;,status:&quot;Active&quot;,progress:45,task:&quot;Input Form Component&quot;}, {id:uid(&quot;pr&quot;),name:&quot;AI Resource Allocation Tool&quot;,desc:&quot;A Python tool using FAISS to match interns to tasks based on skill embeddings. Delivered and in use by the team.&quot;,tech:[&quot;Python&quot;,&quot;FAISS&quot;],start:&quot;2026-03-01&quot;,due:&quot;2026-05-20&quot;,status:&quot;Completed&quot;,progress:100,task:&quot;&quot;} ];
+    function getProjects(){ let p=load(&quot;intern_projects&quot;,null); if(p===null){ p=DEFAULT_PROJECTS; store(&quot;intern_projects&quot;,p);} return p; }
+    function setProjects(p){ store(&quot;intern_projects&quot;,p); }
+
+    /* ================= JUMP NAV + SCROLLSPY ================= */
+    const SECTIONS=[&quot;sec-overview&quot;,&quot;sec-profile&quot;,&quot;sec-skills&quot;,&quot;sec-projects&quot;,&quot;sec-connections&quot;,&quot;sec-feedback&quot;];
+    function jumpTo(id){ const el=document.getElementById(id); if(el) el.scrollIntoView({behavior:&quot;smooth&quot;,block:&quot;start&quot;}); closeMenus(); }
+    function setActiveNav(id){ document.querySelectorAll(&quot;.jump&quot;).forEach(b=>{ const on=b.dataset.target===id; b.className=&quot;jump px-3 py-2 rounded-lg font-medium text-sm flex items-center space-x-2 transition &quot;+(on?&quot;bg-blue-50 text-kpmgBlue&quot;:&quot;text-slate-600 hover:text-kpmgBlue hover:bg-slate-100&quot;); }); }
+    function initScrollspy(){ if(typeof IntersectionObserver===&quot;undefined&quot;) return; const obs=new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting){ let id=e.target.id; if(id===&quot;sec-meetings&quot;) id=&quot;sec-projects&quot;; if(SECTIONS.includes(id)) setActiveNav(id); } }); },{rootMargin:&quot;-45% 0px -50% 0px&quot;}); [&quot;sec-overview&quot;,&quot;sec-profile&quot;,&quot;sec-skills&quot;,&quot;sec-projects&quot;,&quot;sec-meetings&quot;,&quot;sec-connections&quot;,&quot;sec-feedback&quot;].forEach(id=>{ const el=document.getElementById(id); if(el) obs.observe(el); }); }
+
+    /* ================= DROPDOWNS ================= */
+    function closeMenus(except=[]){ [&quot;notificationMenu&quot;,&quot;profileMenu&quot;,&quot;statusMenu&quot;].forEach(id=>{ if(!except.includes(id)) document.getElementById(id).classList.add(&quot;hidden&quot;); }); }
+    function toggleStatusMenu(e){ e.stopPropagation(); document.getElementById(&quot;statusMenu&quot;).classList.toggle(&quot;hidden&quot;); closeMenus([&quot;statusMenu&quot;]); }
+    function toggleNotifications(e){ e.stopPropagation(); document.getElementById(&quot;notificationMenu&quot;).classList.toggle(&quot;hidden&quot;); closeMenus([&quot;notificationMenu&quot;]); }
+    function toggleProfileMenu(e){ e.stopPropagation(); document.getElementById(&quot;profileMenu&quot;).classList.toggle(&quot;hidden&quot;); closeMenus([&quot;profileMenu&quot;]); }
+    window.addEventListener(&quot;click&quot;, ()=>closeMenus());
+    document.querySelectorAll(&quot;#notificationMenu .cursor-pointer&quot;).forEach(item=>item.addEventListener(&quot;click&quot;,function(){ this.classList.add(&quot;bg-slate-100&quot;); const b=document.getElementById(&quot;notificationBadge&quot;); let c=parseInt(b.innerText); if(c>0){ b.innerText=c-1; if(c-1==0) b.style.display=&quot;none&quot;; } }));
+
+    /* ================= AVAILABILITY ================= */
+    function setStatus(status){ store(&quot;intern_status&quot;,status); const s=STATUS_STYLES[status]; document.getElementById(&quot;statusDot&quot;).className=&quot;w-2.5 h-2.5 rounded-full &quot;+s.dot; document.getElementById(&quot;statusLabel&quot;).textContent=s.label; document.getElementById(&quot;statusMenu&quot;).classList.add(&quot;hidden&quot;); renderProfile(); toast(&quot;Your status is now &quot;+s.label,&quot;fa-user-check&quot;); }
+    (function(){ const s=STATUS_STYLES[load(&quot;intern_status&quot;,&quot;active&quot;)]||STATUS_STYLES.active; document.getElementById(&quot;statusDot&quot;).className=&quot;w-2.5 h-2.5 rounded-full &quot;+s.dot; document.getElementById(&quot;statusLabel&quot;).textContent=s.label; })();
+
+    /* ================= LIVE CLOCK ================= */
+    function tickClock(){ const now=new Date(); document.getElementById(&quot;liveClock&quot;).textContent=fmtTimeSec(now); document.getElementById(&quot;liveDate&quot;).textContent=now.toLocaleDateString([], {weekday:'long',month:'short',day:'numeric'}); }
+    setInterval(tickClock,1000); tickClock();
+
+    /* ================= CLOCK IN / OUT ================= */
+    function getTimesheet(){ return load(&quot;timesheet&quot;,{}); }
+    function getTodayRecord(){ const ts=getTimesheet(); return ts[todayKey()]||{in:null,out:null}; }
+    function saveTodayRecord(rec){ const ts=getTimesheet(); ts[todayKey()]=rec; store(&quot;timesheet&quot;,ts); }
+    function clockIn(){ const rec=getTodayRecord(); if(rec.in){ toast(&quot;You already clocked in today.&quot;,&quot;fa-triangle-exclamation&quot;); return; } rec.in=Date.now(); rec.out=null; saveTodayRecord(rec); renderAttendance(); renderStats(); toast(&quot;Clocked in at &quot;+fmtTime(rec.in),&quot;fa-right-to-bracket&quot;); }
+    function clockOut(){ const rec=getTodayRecord(); if(!rec.in){ toast(&quot;Clock in first before clocking out.&quot;,&quot;fa-triangle-exclamation&quot;); return; } if(rec.out){ toast(&quot;You already clocked out today.&quot;,&quot;fa-triangle-exclamation&quot;); return; } rec.out=Date.now(); saveTodayRecord(rec); renderAttendance(); renderStats(); toast(&quot;Clocked out at &quot;+fmtTime(rec.out),&quot;fa-right-from-bracket&quot;); }
+    function renderAttendance(){ const rec=getTodayRecord(); document.getElementById(&quot;inTime&quot;).textContent=rec.in?fmtTime(rec.in):&quot;—&quot;; document.getElementById(&quot;outTime&quot;).textContent=rec.out?fmtTime(rec.out):&quot;—&quot;; document.getElementById(&quot;hoursToday&quot;).textContent=(rec.in&amp;&amp;rec.out)?hoursBetween(rec.in,rec.out):rec.in?&quot;In progress…&quot;:&quot;—&quot;; const stateEl=document.getElementById(&quot;attendanceState&quot;),inBtn=document.getElementById(&quot;clockInBtn&quot;),outBtn=document.getElementById(&quot;clockOutBtn&quot;); if(rec.in&amp;&amp;!rec.out){ stateEl.textContent=&quot;Clocked In&quot;; stateEl.className=&quot;text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded&quot;; inBtn.disabled=true; outBtn.disabled=false; } else { stateEl.textContent=&quot;Clocked Out&quot;; stateEl.className=&quot;text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-2 py-0.5 rounded&quot;; outBtn.disabled=true; inBtn.disabled=!!(rec.in&amp;&amp;rec.out); } renderTimesheet(); }
+    function toggleTimesheet(){ document.getElementById(&quot;timesheet&quot;).classList.toggle(&quot;hidden&quot;); }
+    function renderTimesheet(){ const ts=getTimesheet(); const keys=Object.keys(ts).sort().reverse(); const box=document.getElementById(&quot;timesheet&quot;); if(keys.length===0){ box.innerHTML='<div class=&quot;p-3 text-slate-400&quot;>No records yet.</div>'; return; } box.innerHTML=keys.map(k=>{ const r=ts[k]; const d=new Date(k+&quot;T00:00:00&quot;).toLocaleDateString([], {weekday:'short',month:'short',day:'numeric'}); const hrs=(r.in&amp;&amp;r.out)?hoursBetween(r.in,r.out):(r.in?&quot;open&quot;:&quot;—&quot;); return `<div class=&quot;flex items-center justify-between px-3 py-2&quot;><span class=&quot;font-semibold text-slate-600&quot;>${d}</span><span class=&quot;text-slate-500&quot;>${r.in?fmtTime(r.in):&quot;—&quot;} → ${r.out?fmtTime(r.out):&quot;—&quot;}</span><span class=&quot;font-bold text-kpmgBlue&quot;>${hrs}</span></div>`; }).join(&quot;&quot;); }
+
+    /* ================= STATS BAND ================= */
+    function profileCompleteness(){ const p=getProfile(); const fields=[&quot;name&quot;,&quot;role&quot;,&quot;email&quot;,&quot;location&quot;,&quot;manager&quot;,&quot;duration&quot;,&quot;bio&quot;,&quot;uni&quot;,&quot;degree&quot;,&quot;grad&quot;,&quot;gpa&quot;]; let filled=fields.filter(f=>p[f]&amp;&amp;(&quot;&quot;+p[f]).trim()).length; if((p.interests||[]).length) filled++; if((p.languages||[]).length) filled++; if((p.certs||[]).length) filled++; const total=fields.length+3; return Math.round(filled/total*100); }
+    function renderStats(){
+        const sk=getSkills(), pr=getProjects(), p=getProfile(), fb=getFeedback();
+        const avgProf=sk.length?Math.round(sk.reduce((a,s)=>a+s.prof,0)/sk.length):0;
+        document.getElementById(&quot;stSkills&quot;).textContent=sk.length;
+        document.getElementById(&quot;stSkillsSub&quot;).textContent=sk.filter(s=>s.prof>=85).length+&quot; at expert&quot;;
+        document.getElementById(&quot;stAvg&quot;).textContent=avgProf+&quot;%&quot;;
+        document.getElementById(&quot;stAvgBar&quot;).style.width=avgProf+&quot;%&quot;;
+        document.getElementById(&quot;stActive&quot;).textContent=pr.filter(x=>x.status===&quot;Active&quot;).length;
+        document.getElementById(&quot;stCompleted&quot;).textContent=pr.filter(x=>x.status===&quot;Completed&quot;).length+&quot; completed&quot;;
+        const ts=load(&quot;timesheet&quot;,{}); const weekAgo=Date.now()-7*86400000; let hours=0,lastIn=null;
+        Object.values(ts).forEach(r=>{ if(r.in){ if(!lastIn||r.in>lastIn) lastIn=r.in; } if(r.in&amp;&amp;r.out&amp;&amp;r.in>=weekAgo) hours+=(r.out-r.in)/3600000; });
+        document.getElementById(&quot;stHours&quot;).textContent=hours.toFixed(1);
+        document.getElementById(&quot;stLastIn&quot;).textContent=lastIn?(&quot;Last in &quot;+fmtTime(lastIn)):&quot;No clock-ins&quot;;
+        document.getElementById(&quot;stCerts&quot;).textContent=(p.certs||[]).length;
+        document.getElementById(&quot;stCertGoal&quot;).textContent=&quot;Goal: &quot;+(p.certGoal||5);
+        const avgR=fb.length?(fb.reduce((a,f)=>a+f.rating,0)/fb.length).toFixed(1):&quot;—&quot;;
+        document.getElementById(&quot;stRating&quot;).innerHTML=fb.length?avgR+' <span class=&quot;text-lg&quot;>★</span>':&quot;—&quot;;
+        document.getElementById(&quot;stReviews&quot;).textContent=fb.length+&quot; reviews&quot;;
+        document.getElementById(&quot;stMeetings&quot;).textContent=getBookings().length;
+        document.getElementById(&quot;stComplete&quot;).textContent=profileCompleteness()+&quot;%&quot;;
+    }
+
+    /* ================= DASHBOARD PROJECT PROGRESS ================= */
+    function renderDashProjects(){ const projects=getProjects(); const show=projects.filter(p=>p.status===&quot;Active&quot;).concat(projects.filter(p=>p.status!==&quot;Active&quot;)).slice(0,3); const colors={Active:{t:&quot;text-kpmgBlue&quot;,b:&quot;bg-blue-50&quot;,bar:&quot;bg-kpmgBlue&quot;},&quot;On Hold&quot;:{t:&quot;text-amber-600&quot;,b:&quot;bg-amber-50&quot;,bar:&quot;bg-amber-400&quot;},Completed:{t:&quot;text-emerald-600&quot;,b:&quot;bg-emerald-50&quot;,bar:&quot;bg-emerald-500&quot;}}; document.getElementById(&quot;dashProjects&quot;).innerHTML=show.map(p=>{ const c=colors[p.status]||colors.Active; const badge=p.status===&quot;Completed&quot;?`<span class=&quot;text-xs font-bold ${c.t} ${c.b} px-2 py-0.5 rounded flex items-center&quot;><i class=&quot;fa-solid fa-circle-check mr-1 text-xs&quot;></i> Completed!</span>`:`<span class=&quot;text-xs font-bold ${c.t} ${c.b} px-2 py-0.5 rounded&quot;>${p.progress}% Complete</span>`; return `<div><div class=&quot;flex justify-between items-baseline mb-1.5&quot;><div><span class=&quot;font-semibold text-slate-800 text-sm&quot;>${esc(p.name)}</span><span class=&quot;text-xs text-slate-400 ml-2&quot;>(${(p.tech||[]).join(&quot;/&quot;)})</span></div>${badge}</div><div class=&quot;w-full bg-slate-100 rounded-full h-2.5 overflow-hidden&quot;><div class=&quot;${c.bar} h-2.5 rounded-full&quot; style=&quot;width:${p.progress}%&quot;></div></div>${p.task?`<p class=&quot;text-xs text-slate-400 mt-1&quot;><i class=&quot;fa-regular fa-folder-open mr-1&quot;></i> Current Task: ${esc(p.task)}</p>`:&quot;&quot;}</div>`; }).join(&quot;&quot;)||'<p class=&quot;text-sm text-slate-400&quot;>No projects yet.</p>'; }
+
+    /* ================= MANAGERS + BOOKING ================= */
+    const MANAGERS = [ {id:&quot;m1&quot;,name:&quot;David Chen&quot;,role:&quot;Technology Advisory&quot;,status:&quot;active&quot;,yourManager:true}, {id:&quot;m2&quot;,name:&quot;Sara Malik&quot;,role:&quot;Data &amp; Analytics&quot;,status:&quot;active&quot;,yourManager:false}, {id:&quot;m3&quot;,name:&quot;Tom Becker&quot;,role:&quot;Cloud Engineering&quot;,status:&quot;away&quot;,yourManager:false}, {id:&quot;m4&quot;,name:&quot;Lena Torres&quot;,role:&quot;Cybersecurity&quot;,status:&quot;offline&quot;,yourManager:false} ];
+    let selectedManager=null, selectedDay=null, selectedSlot=null;
+    const SLOT_HOURS=[&quot;09:00&quot;,&quot;10:00&quot;,&quot;11:00&quot;,&quot;13:00&quot;,&quot;14:00&quot;,&quot;15:00&quot;,&quot;16:00&quot;,&quot;17:00&quot;];
+    function renderManagers(){ document.getElementById(&quot;managerList&quot;).innerHTML=MANAGERS.map(m=>{ const s=STATUS_STYLES[m.status]; const bookable=m.status===&quot;active&quot;; const sel=selectedManager===m.id; return `<button onclick=&quot;selectManager('${m.id}')&quot; ${bookable?&quot;&quot;:&quot;disabled&quot;} class=&quot;text-left p-3 rounded-xl border transition flex items-center justify-between ${sel?'border-kpmgBlue ring-2 ring-kpmgBlue/20 bg-blue-50/40':'border-slate-200 hover:border-kpmgBlue/40'} ${bookable?'':'opacity-50 cursor-not-allowed'}&quot;><div class=&quot;flex items-center space-x-2 min-w-0&quot;><span class=&quot;w-2.5 h-2.5 rounded-full ${s.dot} shrink-0&quot;></span><div class=&quot;min-w-0&quot;><p class=&quot;text-sm font-semibold text-slate-800 truncate&quot;>${m.name} ${m.yourManager?'<span class=&quot;text-[9px] font-bold text-kpmgBlue bg-blue-50 px-1 py-0.5 rounded ml-1&quot;>YOUR MGR</span>':''}</p><p class=&quot;text-[11px] text-slate-400 truncate&quot;>${m.role} · ${s.label}</p></div></div>${sel?'<i class=&quot;fa-solid fa-circle-check text-kpmgBlue&quot;></i>':''}</button>`; }).join(&quot;&quot;); }
+    function selectManager(id){ selectedManager=id; selectedSlot=null; renderManagers(); renderSlots(); updateConfirmState(); }
+    function nextBusinessDays(n){ const days=[]; let d=new Date(); while(days.length<n){ d=new Date(d.getTime()+86400000); const dow=d.getDay(); if(dow!==0&amp;&amp;dow!==6) days.push(new Date(d)); } return days; }
+    function renderDays(){ document.getElementById(&quot;dayList&quot;).innerHTML=nextBusinessDays(6).map(d=>{ const key=todayKey(d); const sel=selectedDay===key; return `<button onclick=&quot;selectDay('${key}')&quot; class=&quot;shrink-0 w-16 py-2 rounded-xl border text-center transition ${sel?'border-kpmgBlue bg-kpmgBlue text-white':'border-slate-200 hover:border-kpmgBlue/40 text-slate-600'}&quot;><div class=&quot;text-[10px] uppercase font-bold ${sel?'text-blue-100':'text-slate-400'}&quot;>${d.toLocaleDateString([], {weekday:'short'})}</div><div class=&quot;text-lg font-extrabold leading-none&quot;>${d.getDate()}</div><div class=&quot;text-[10px] ${sel?'text-blue-100':'text-slate-400'}&quot;>${d.toLocaleDateString([], {month:'short'})}</div></button>`; }).join(&quot;&quot;); }
+    function selectDay(key){ selectedDay=key; selectedSlot=null; renderDays(); renderSlots(); updateConfirmState(); }
+    function getBookings(){ return load(&quot;bookings&quot;,[]); }
+    function isSlotTaken(m,d,s){ return getBookings().some(b=>b.mgrId===m&amp;&amp;b.day===d&amp;&amp;b.slot===s); }
+    function renderSlots(){ const wrap=document.getElementById(&quot;slotList&quot;); if(!selectedManager||!selectedDay){ wrap.innerHTML='<div class=&quot;col-span-full text-xs text-slate-400 py-2&quot;>Select a manager and a day to see open times.</div>'; return; } wrap.innerHTML=SLOT_HOURS.map(h=>{ const taken=isSlotTaken(selectedManager,selectedDay,h); const sel=selectedSlot===h; return `<button onclick=&quot;selectSlot('${h}')&quot; ${taken?&quot;disabled&quot;:&quot;&quot;} class=&quot;text-sm py-2 rounded-lg border font-semibold transition ${taken?'bg-slate-100 text-slate-300 line-through cursor-not-allowed border-slate-100':sel?'bg-kpmgBlue text-white border-kpmgBlue':'border-slate-200 text-slate-600 hover:border-kpmgBlue/50'}&quot;>${h}</button>`; }).join(&quot;&quot;); }
+    function selectSlot(h){ selectedSlot=h; renderSlots(); updateConfirmState(); }
+    function updateConfirmState(){ document.getElementById(&quot;confirmBookingBtn&quot;).disabled=!(selectedManager&amp;&amp;selectedDay&amp;&amp;selectedSlot); }
+    function confirmBooking(){ if(!(selectedManager&amp;&amp;selectedDay&amp;&amp;selectedSlot)) return; const mgr=MANAGERS.find(m=>m.id===selectedManager); const b=getBookings(); b.push({id:&quot;bk_&quot;+Date.now(),mgrId:mgr.id,mgrName:mgr.name,mgrRole:mgr.role,day:selectedDay,slot:selectedSlot,createdAt:Date.now()}); store(&quot;bookings&quot;,b); toast(`Meeting booked with ${mgr.name} on ${selectedDay} at ${selectedSlot}`,&quot;fa-calendar-check&quot;); selectedSlot=null; renderSlots(); renderBookings(); renderStats(); updateConfirmState(); }
+    function cancelBooking(id){ store(&quot;bookings&quot;,getBookings().filter(b=>b.id!==id)); renderSlots(); renderBookings(); renderStats(); toast(&quot;Meeting cancelled.&quot;,&quot;fa-calendar-xmark&quot;); }
+    function renderBookings(){ const list=getBookings().sort((a,b)=>(a.day+a.slot).localeCompare(b.day+b.slot)); const wrap=document.getElementById(&quot;bookingsList&quot;); if(list.length===0){ wrap.innerHTML='<div class=&quot;text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl p-4 text-center&quot;>No meetings booked yet.</div>'; return; } wrap.innerHTML=list.map(b=>{ const d=new Date(b.day+&quot;T00:00:00&quot;).toLocaleDateString([], {weekday:'short',month:'short',day:'numeric'}); return `<div class=&quot;flex items-center justify-between bg-white border border-slate-200 rounded-xl p-3&quot;><div class=&quot;flex items-center space-x-3 min-w-0&quot;><div class=&quot;w-9 h-9 rounded-lg bg-blue-50 text-kpmgBlue flex items-center justify-center shrink-0&quot;><i class=&quot;fa-regular fa-calendar&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;text-sm font-semibold text-slate-800 truncate&quot;>${b.mgrName} · ${b.slot}</p><p class=&quot;text-[11px] text-slate-400 truncate&quot;>${d} · ${b.mgrRole}</p></div></div><button onclick=&quot;cancelBooking('${b.id}')&quot; class=&quot;text-xs text-rose-500 hover:text-rose-700 font-semibold px-2 py-1 rounded-lg hover:bg-rose-50 transition&quot;><i class=&quot;fa-solid fa-xmark mr-1&quot;></i>Cancel</button></div>`; }).join(&quot;&quot;); }
+    function scrollToBooking(){ jumpTo(&quot;sec-meetings&quot;); const mine=MANAGERS.find(m=>m.yourManager&amp;&amp;m.status===&quot;active&quot;); if(mine) selectManager(mine.id); }
+
+    /* ================= AI ASSISTANT ================= */
+    const USE_REAL_API=false, API_URL=&quot;&quot;, API_KEY=&quot;&quot;;
+    async function callRealAPI(message){ const r=await fetch(API_URL,{method:&quot;POST&quot;,headers:{&quot;Content-Type&quot;:&quot;application/json&quot;,&quot;Authorization&quot;:&quot;Bearer &quot;+API_KEY},body:JSON.stringify({message})}); const d=await r.json(); return d.reply; }
+    function demoBrain(qRaw){
+        const q=qRaw.toLowerCase(); const p=getProfile(); const sk=getSkills(); const skMap={}; sk.forEach(s=>skMap[s.name]=s.prof);
+        const sorted=sk.slice().sort((a,b)=>a.prof-b.prof); const lowest=sorted[0]||{name:&quot;a new area&quot;,prof:0}; const highest=sorted[sorted.length-1]||{name:&quot;your top skill&quot;,prof:0}; const interests=(p.interests||[]).join(&quot;, &quot;);
+        if(/(clock|clocked|attendance|check in|checked in)/.test(q)){ const rec=getTodayRecord(); if(rec.in&amp;&amp;rec.out) return `Today you clocked in at <b>${fmtTime(rec.in)}</b> and out at <b>${fmtTime(rec.out)}</b> — ${hoursBetween(rec.in,rec.out)} on site.`; if(rec.in) return `You clocked in at <b>${fmtTime(rec.in)}</b> and haven't clocked out yet.`; return `You haven't clocked in today yet. Use the <b>Clock In</b> button in Office Attendance.`; }
+        if(/(meeting|book|calendar|1:1|one on one|schedule)/.test(q)){ const u=getBookings().length; return `Book a meeting in the <b>Book a Meeting</b> section — pick an active manager, a day, and a slot. `+(u?`You have <b>${u}</b> scheduled.`:`You have none booked yet.`)+` Your manager <b>${p.manager}</b> is a good first 1:1.`; }
+        if(/(connect|network|people|coffee|colleague|who should i meet)/.test(q)){ return `Open the <b>Connections</b> section to search people by department and request a coffee chat via Outlook or Teams. I'll suggest people matched to your interests: <b>${interests}</b>.`; }
+        if(/(feedback|review|rating|how am i doing)/.test(q)){ const fb=getFeedback(); const avg=fb.length?(fb.reduce((a,f)=>a+f.rating,0)/fb.length).toFixed(1):&quot;—&quot;; return `Your managers leave feedback after each project in the <b>Feedback</b> section (read-only for you). So far: <b>${fb.length}</b> reviews, avg <b>${avg}★</b>, with an AI summary of recurring themes.`; }
+        if(/(manager|who.*(report|under)|my boss|supervisor)/.test(q)){ return `You report to <b>${p.manager}</b> (Manager, Technology Advisory). See their live availability and book time from the dashboard.`; }
+        if(/(learn|study|course|next|improve|upskill|training)/.test(q)){ return `Your strongest area is <b>${highest.name} (${highest.prof}%)</b>; biggest growth opportunity is <b>${lowest.name} (${lowest.prof}%)</b>. I'd recommend a focused <b>${lowest.name}</b> module plus <b>Azure Fundamentals</b>. You're at ${(p.certs||[]).length}/${p.certGoal||5} certifications.`; }
+        if(/(mentor|coach|pair|shadow)/.test(q)){ return `Given your interest in <b>${interests}</b>, a strong mentor match is <b>Sara Malik</b> (Data &amp; Analytics) — currently Active. For cloud, <b>Tom Becker</b>. Find them in <b>Connections</b>.`; }
+        if(/(career|path|role|grow|future|full.?time|convert)/.test(q)){ return `With ${highest.name} + SQL and interests in ${interests}, a natural path is <b>Intern → Data/Cloud Analyst → Consultant</b>. Finish your Azure cert, ship the Client Onboarding Dashboard, and discuss a rotation with ${p.manager}.`; }
+        if(/(skill|proficien|strength|good at)/.test(q)){ const list=sk.map(s=>`${s.name} ${s.prof}%`).join(&quot;, &quot;); return `Your skill profile: <b>${list}</b>. Strongest: ${highest.name}. Focus area: ${lowest.name}. Manage them in the <b>Skills</b> section.`; }
+        if(/(cert|certificat|badge|qualif)/.test(q)){ return `You hold ${(p.certs||[]).length} certifications: <b>${(p.certs||[]).join(&quot;, &quot;)}</b>. Goal: ${p.certGoal||5}. Suggested next: Azure Fundamentals (AZ-900).`; }
+        if(/(project|task|assignment|work on)/.test(q)){ const act=getProjects().filter(x=>x.status===&quot;Active&quot;).map(x=>x.name).join(&quot;, &quot;); return `Active projects: <b>${act||&quot;none yet&quot;}</b>. Manage them in <b>Projects</b>. Highest-impact next: <b>Client Database Optimization (SQL)</b> — 88% match.`; }
+        if(/(^hi|^hello|^hey|help|what can you)/.test(q)){ return `Hi ${p.name.split(&quot; &quot;)[0]}! I can help with what to <b>learn next</b>, finding a <b>mentor</b>, your <b>career path</b>, <b>booking meetings</b>, <b>connections</b>, <b>feedback</b>, and your <b>clock-in</b>. What would you like?`; }
+        if(/azure/.test(q)){ return `You're at <b>Azure ${skMap.Azure||0}%</b>. Complete <b>AZ-900</b>, then practice App Service + SQL deployments. Great fit for your Cloud interest.`; }
+        return `Your profile shows strengths in <b>${highest.name}</b>, with room to grow in <b>${lowest.name}</b>. Try &quot;what should I learn next?&quot;, &quot;recommend a mentor&quot;, &quot;my career path&quot;, or &quot;did I clock in?&quot;.`;
+    }
+    async function getAIResponse(m){ if(USE_REAL_API&amp;&amp;API_URL){ try{ return await callRealAPI(m); }catch(e){ return &quot;⚠️ Couldn't reach the AI server, so here's a local answer:<br><br>&quot;+demoBrain(m); } } await new Promise(r=>setTimeout(r,350)); return demoBrain(m); }
+    function renderAIAnswer(q,a){ document.getElementById(&quot;aiResults&quot;).innerHTML=`<div class=&quot;bg-blue-50/60 border border-blue-100 rounded-xl p-3 text-sm text-slate-600&quot;><span class=&quot;font-semibold text-kpmgBlue&quot;>You:</span> ${q}</div><div class=&quot;bg-white border rounded-xl p-4 text-sm text-slate-700 leading-relaxed&quot;><div class=&quot;flex items-center space-x-2 mb-2 text-kpmgBlue font-bold text-xs uppercase tracking-wide&quot;><i class=&quot;fa-solid fa-wand-magic-sparkles&quot;></i><span>AI Assistant</span></div>${a}</div>`; }
+    async function sendAIMessage(){ const el=document.getElementById(&quot;aiInput&quot;); const input=el.value.trim(); if(input===&quot;&quot;) return; document.getElementById(&quot;aiResults&quot;).innerHTML=`<div class=&quot;bg-white border rounded-xl p-4 text-sm text-slate-500 flex items-center space-x-2&quot;><i class=&quot;fa-solid fa-spinner fa-spin text-kpmgBlue&quot;></i><span>Thinking…</span></div>`; const a=await getAIResponse(input); renderAIAnswer(input,a); el.value=&quot;&quot;; }
+    document.getElementById(&quot;sendAI&quot;).addEventListener(&quot;click&quot;,sendAIMessage);
+    document.getElementById(&quot;aiInput&quot;).addEventListener(&quot;keydown&quot;,function(e){ if(e.key===&quot;Enter&quot;&amp;&amp;!e.shiftKey){ e.preventDefault(); sendAIMessage(); } });
+    document.querySelectorAll(&quot;.ai-chip&quot;).forEach(chip=>chip.addEventListener(&quot;click&quot;,function(){ document.getElementById(&quot;aiInput&quot;).value=this.textContent; sendAIMessage(); }));
+
+    /* ================= PROFILE ================= */
+    function skillLevel(p){ if(p>=85) return {label:&quot;Expert&quot;,bar:&quot;bg-emerald-500&quot;,text:&quot;text-emerald-600&quot;,bg:&quot;bg-emerald-50&quot;}; if(p>=65) return {label:&quot;Advanced&quot;,bar:&quot;bg-kpmgBlue&quot;,text:&quot;text-kpmgBlue&quot;,bg:&quot;bg-blue-50&quot;}; if(p>=40) return {label:&quot;Intermediate&quot;,bar:&quot;bg-kpmgTeal&quot;,text:&quot;text-kpmgTeal&quot;,bg:&quot;bg-teal-50&quot;}; return {label:&quot;Beginner&quot;,bar:&quot;bg-slate-400&quot;,text:&quot;text-slate-500&quot;,bg:&quot;bg-slate-100&quot;}; }
+    const CAT_ICON={&quot;Programming&quot;:&quot;fa-code&quot;,&quot;Cloud&quot;:&quot;fa-cloud&quot;,&quot;Data &amp; Analytics&quot;:&quot;fa-database&quot;,&quot;Frameworks&quot;:&quot;fa-layer-group&quot;,&quot;Tools&quot;:&quot;fa-screwdriver-wrench&quot;,&quot;Languages&quot;:&quot;fa-language&quot;,&quot;Soft Skills&quot;:&quot;fa-people-group&quot;,&quot;Other&quot;:&quot;fa-star&quot;};
+    function renderProfile(){
+        const p=getProfile(); const T=(id,v)=>document.getElementById(id).textContent=v;
+        T(&quot;navName&quot;,p.name); T(&quot;navRole&quot;,p.role); T(&quot;pName&quot;,p.name); T(&quot;pRole&quot;,p.role); T(&quot;pEmail&quot;,p.email); T(&quot;pLocation&quot;,p.location); T(&quot;pManager&quot;,p.manager); T(&quot;pDuration&quot;,&quot;Internship: &quot;+p.duration); T(&quot;pBio&quot;,p.bio); T(&quot;pUni&quot;,p.uni); T(&quot;pDegree&quot;,p.degree); T(&quot;pGrad&quot;,p.grad); T(&quot;pGpa&quot;,p.gpa);
+        document.getElementById(&quot;pInterests&quot;).innerHTML=(p.interests||[]).map(i=>`<span class=&quot;text-xs font-semibold text-kpmgBlue bg-blue-50 px-2.5 py-1 rounded-full&quot;>${esc(i)}</span>`).join(&quot;&quot;)||'<span class=&quot;text-xs text-slate-300&quot;>None</span>';
+        document.getElementById(&quot;pLanguages&quot;).innerHTML=(p.languages||[]).map(l=>`<span class=&quot;text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full&quot;>${esc(l)}</span>`).join(&quot;&quot;)||'<span class=&quot;text-xs text-slate-300&quot;>None</span>';
+        const st=STATUS_STYLES[load(&quot;intern_status&quot;,&quot;active&quot;)]||STATUS_STYLES.active; document.getElementById(&quot;profStatusDot&quot;).className=&quot;absolute bottom-1 right-1 w-5 h-5 rounded-full border-2 border-white &quot;+st.dot; const sl=document.getElementById(&quot;pStatusLabel&quot;); sl.textContent=&quot;● &quot;+st.label; sl.className=&quot;text-xs font-semibold mt-1 &quot;+st.text;
+        const certs=p.certs||[]; document.getElementById(&quot;certList&quot;).innerHTML=certs.length?certs.map(c=>{ const [n,r]=c.split(&quot;—&quot;).map(s=>s&amp;&amp;s.trim()); return `<div class=&quot;flex items-center gap-3 p-3 bg-slate-50 rounded-xl&quot;><div class=&quot;w-9 h-9 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center shrink-0&quot;><i class=&quot;fa-solid fa-certificate&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;text-sm font-semibold text-slate-800 truncate&quot;>${esc(n||c)}</p>${r?`<p class=&quot;text-xs text-slate-400 truncate&quot;>${esc(r)}</p>`:&quot;&quot;}</div></div>`; }).join(&quot;&quot;):'<p class=&quot;text-sm text-slate-400&quot;>No certifications added yet.</p>';
+        renderStats();
+    }
+    function openEdit(){ const p=getProfile(); const S=(id,v)=>document.getElementById(id).value=v; S(&quot;eName&quot;,p.name);S(&quot;eRole&quot;,p.role);S(&quot;eEmail&quot;,p.email);S(&quot;eLocation&quot;,p.location);S(&quot;eManager&quot;,p.manager);S(&quot;eDuration&quot;,p.duration);S(&quot;eBio&quot;,p.bio);S(&quot;eUni&quot;,p.uni);S(&quot;eDegree&quot;,p.degree);S(&quot;eGrad&quot;,p.grad);S(&quot;eGpa&quot;,p.gpa);S(&quot;eInterests&quot;,(p.interests||[]).join(&quot;, &quot;));S(&quot;eLanguages&quot;,(p.languages||[]).join(&quot;, &quot;));S(&quot;eCerts&quot;,(p.certs||[]).join(&quot;\n&quot;)); document.getElementById(&quot;editModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeEdit(){ document.getElementById(&quot;editModal&quot;).classList.add(&quot;hidden&quot;); }
+    function saveProfile(){ const g=id=>document.getElementById(id).value.trim(); const sc=v=>v.split(&quot;,&quot;).map(x=>x.trim()).filter(Boolean); const p=getProfile(); setProfile({...p,name:g(&quot;eName&quot;)||p.name,role:g(&quot;eRole&quot;),email:g(&quot;eEmail&quot;),location:g(&quot;eLocation&quot;),manager:g(&quot;eManager&quot;),duration:g(&quot;eDuration&quot;),bio:g(&quot;eBio&quot;),uni:g(&quot;eUni&quot;),degree:g(&quot;eDegree&quot;),grad:g(&quot;eGrad&quot;),gpa:g(&quot;eGpa&quot;),interests:sc(g(&quot;eInterests&quot;)),languages:sc(g(&quot;eLanguages&quot;)),certs:g(&quot;eCerts&quot;).split(&quot;\n&quot;).map(x=>x.trim()).filter(Boolean)}); closeEdit(); renderProfile(); toast(&quot;Profile saved.&quot;); }
+
+    /* ===== Skills CRUD ===== */
+    let skillFilter=&quot;All&quot;;
+    function setSkillFilter(c){ skillFilter=c; renderSkills(); }
+    function renderSkills(){ const all=getSkills(); const cats=[&quot;All&quot;,...new Set(all.map(s=>s.category))]; document.getElementById(&quot;skillsFilterBar&quot;).innerHTML=cats.map(c=>`<button onclick=&quot;setSkillFilter('${c.replace(/'/g,&quot;\\'&quot;)}')&quot; class=&quot;text-xs font-semibold px-3 py-1.5 rounded-full border transition ${skillFilter===c?'bg-kpmgBlue text-white border-kpmgBlue':'bg-white text-slate-600 border-slate-200 hover:border-kpmgBlue/40'}&quot;>${c}</button>`).join(&quot;&quot;); const list=skillFilter===&quot;All&quot;?all:all.filter(s=>s.category===skillFilter); const grid=document.getElementById(&quot;skillsGrid&quot;); const empty=document.getElementById(&quot;skillsEmpty&quot;); if(all.length===0){ empty.classList.remove(&quot;hidden&quot;); grid.innerHTML=&quot;&quot;; return; } empty.classList.add(&quot;hidden&quot;); grid.innerHTML=list.map(s=>{ const lv=skillLevel(s.prof); return `<div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-5&quot;><div class=&quot;flex items-start justify-between&quot;><div class=&quot;flex items-center gap-3 min-w-0&quot;><div class=&quot;w-10 h-10 rounded-xl ${lv.bg} ${lv.text} flex items-center justify-center shrink-0&quot;><i class=&quot;fa-solid ${CAT_ICON[s.category]||'fa-star'}&quot;></i></div><div class=&quot;min-w-0&quot;><p class=&quot;font-bold text-slate-800 truncate&quot;>${esc(s.name)}</p><p class=&quot;text-xs text-slate-400&quot;>${esc(s.category)}</p></div></div><div class=&quot;flex items-center gap-1 shrink-0&quot;><button onclick=&quot;openSkillModal('${s.id}')&quot; class=&quot;w-8 h-8 rounded-lg text-slate-400 hover:text-kpmgBlue hover:bg-slate-100 transition&quot;><i class=&quot;fa-solid fa-pen&quot;></i></button><button onclick=&quot;askDeleteSkill('${s.id}')&quot; class=&quot;w-8 h-8 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition&quot;><i class=&quot;fa-solid fa-trash&quot;></i></button></div></div><div class=&quot;mt-4&quot;><div class=&quot;flex justify-between items-baseline mb-1.5&quot;><span class=&quot;text-xs font-semibold ${lv.text} ${lv.bg} px-2 py-0.5 rounded&quot;>${lv.label}</span><span class=&quot;text-sm font-bold text-slate-700&quot;>${s.prof}%</span></div><div class=&quot;w-full bg-slate-100 rounded-full h-2.5 overflow-hidden&quot;><div class=&quot;${lv.bar} h-2.5 rounded-full transition-all&quot; style=&quot;width:${s.prof}%&quot;></div></div></div></div>`; }).join(&quot;&quot;); }
+    function openSkillModal(id){ document.getElementById(&quot;skillNameError&quot;).classList.add(&quot;hidden&quot;); if(id){ const s=getSkills().find(x=>x.id===id); document.getElementById(&quot;skillModalTitle&quot;).textContent=&quot;Edit Skill&quot;; document.getElementById(&quot;skillId&quot;).value=s.id; document.getElementById(&quot;skillName&quot;).value=s.name; document.getElementById(&quot;skillCategory&quot;).value=s.category; document.getElementById(&quot;skillProf&quot;).value=s.prof; } else { document.getElementById(&quot;skillModalTitle&quot;).textContent=&quot;Add Skill&quot;; document.getElementById(&quot;skillId&quot;).value=&quot;&quot;; document.getElementById(&quot;skillName&quot;).value=&quot;&quot;; document.getElementById(&quot;skillCategory&quot;).value=&quot;Programming&quot;; document.getElementById(&quot;skillProf&quot;).value=70; } updateProfLabel(); document.getElementById(&quot;skillModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeSkillModal(){ document.getElementById(&quot;skillModal&quot;).classList.add(&quot;hidden&quot;); }
+    function updateProfLabel(){ const p=parseInt(document.getElementById(&quot;skillProf&quot;).value); document.getElementById(&quot;skProfValue&quot;).textContent=p+&quot;%&quot;; document.getElementById(&quot;skProfLabel&quot;).textContent=skillLevel(p).label; }
+    function saveSkill(){ const name=document.getElementById(&quot;skillName&quot;).value.trim(); if(!name){ document.getElementById(&quot;skillNameError&quot;).classList.remove(&quot;hidden&quot;); return; } const id=document.getElementById(&quot;skillId&quot;).value; const category=document.getElementById(&quot;skillCategory&quot;).value; const prof=parseInt(document.getElementById(&quot;skillProf&quot;).value); let s=getSkills(); if(id){ s=s.map(x=>x.id===id?{...x,name,category,prof}:x); toast(&quot;Skill updated.&quot;); } else { s.push({id:uid(&quot;sk&quot;),name,category,prof}); toast(&quot;Skill added.&quot;); } setSkills(s); closeSkillModal(); renderSkills(); renderStats(); }
+    let pendingSkillDelete=null;
+    function askDeleteSkill(id){ pendingSkillDelete=id; const s=getSkills().find(x=>x.id===id); document.getElementById(&quot;skillConfirmName&quot;).textContent=s?s.name+&quot; · &quot;+s.category:&quot;&quot;; document.getElementById(&quot;skillConfirmModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeSkillConfirm(){ document.getElementById(&quot;skillConfirmModal&quot;).classList.add(&quot;hidden&quot;); pendingSkillDelete=null; }
+    function doDeleteSkill(){ setSkills(getSkills().filter(s=>s.id!==pendingSkillDelete)); closeSkillConfirm(); const cats=new Set(getSkills().map(s=>s.category)); if(skillFilter!==&quot;All&quot;&amp;&amp;!cats.has(skillFilter)) skillFilter=&quot;All&quot;; renderSkills(); renderStats(); toast(&quot;Skill removed.&quot;,&quot;fa-trash&quot;); }
+
+    /* ===== Projects CRUD ===== */
+    const PROJ_STATUS={&quot;Active&quot;:{text:&quot;text-kpmgBlue&quot;,bg:&quot;bg-blue-50&quot;,bar:&quot;bg-kpmgBlue&quot;,dot:&quot;bg-kpmgBlue&quot;},&quot;On Hold&quot;:{text:&quot;text-amber-600&quot;,bg:&quot;bg-amber-50&quot;,bar:&quot;bg-amber-400&quot;,dot:&quot;bg-amber-400&quot;},&quot;Completed&quot;:{text:&quot;text-emerald-600&quot;,bg:&quot;bg-emerald-50&quot;,bar:&quot;bg-emerald-500&quot;,dot:&quot;bg-emerald-500&quot;}};
+    let projFilter=&quot;All&quot;;
+    function setProjFilter(o){ projFilter=o; renderProjects(); }
+    function renderProjects(){ const all=getProjects(); document.getElementById(&quot;projectsFilterBar&quot;).innerHTML=[&quot;All&quot;,&quot;Active&quot;,&quot;On Hold&quot;,&quot;Completed&quot;].map(o=>`<button onclick=&quot;setProjFilter('${o}')&quot; class=&quot;text-xs font-semibold px-3 py-1.5 rounded-full border transition ${projFilter===o?'bg-kpmgBlue text-white border-kpmgBlue':'bg-white text-slate-600 border-slate-200 hover:border-kpmgBlue/40'}&quot;>${o}</button>`).join(&quot;&quot;); const list=projFilter===&quot;All&quot;?all:all.filter(p=>p.status===projFilter); const wrap=document.getElementById(&quot;projectsList&quot;); const empty=document.getElementById(&quot;projectsEmpty&quot;); if(all.length===0){ empty.classList.remove(&quot;hidden&quot;); wrap.innerHTML=&quot;&quot;; return; } empty.classList.add(&quot;hidden&quot;); if(list.length===0){ wrap.innerHTML=`<div class=&quot;text-sm text-slate-400 text-center py-8 lg:col-span-2&quot;>No <b>${projFilter}</b> projects.</div>`; return; } wrap.innerHTML=list.map(p=>{ const st=PROJ_STATUS[p.status]||PROJ_STATUS.Active; const tech=(p.tech||[]).map(t=>`<span class=&quot;text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full&quot;>${esc(t)}</span>`).join(&quot; &quot;); return `<div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden&quot;><div class=&quot;p-6&quot;><div class=&quot;flex items-start justify-between gap-4&quot;><div class=&quot;min-w-0&quot;><div class=&quot;flex items-center gap-2 flex-wrap&quot;><h3 class=&quot;font-bold text-slate-800 text-lg&quot;>${esc(p.name)}</h3><span class=&quot;text-[11px] font-bold ${st.text} ${st.bg} px-2 py-0.5 rounded-full flex items-center gap-1&quot;><span class=&quot;w-1.5 h-1.5 rounded-full ${st.dot}&quot;></span>${p.status}</span></div><p class=&quot;text-sm text-slate-500 mt-2 leading-relaxed&quot;>${esc(p.desc)||'<span class=&quot;italic text-slate-300&quot;>No description.</span>'}</p></div><div class=&quot;flex items-center gap-1 shrink-0&quot;><button onclick=&quot;openProjectModal('${p.id}')&quot; class=&quot;w-8 h-8 rounded-lg text-slate-400 hover:text-kpmgBlue hover:bg-slate-100 transition&quot;><i class=&quot;fa-solid fa-pen&quot;></i></button><button onclick=&quot;askDeleteProject('${p.id}')&quot; class=&quot;w-8 h-8 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition&quot;><i class=&quot;fa-solid fa-trash&quot;></i></button></div></div>${tech?`<div class=&quot;flex flex-wrap gap-1.5 mt-3&quot;>${tech}</div>`:&quot;&quot;}<div class=&quot;mt-4&quot;><div class=&quot;flex justify-between items-baseline mb-1.5&quot;><span class=&quot;text-xs text-slate-400 font-medium&quot;>${p.task?('<i class=\&quot;fa-regular fa-folder-open mr-1\&quot;></i>'+esc(p.task)):'Progress'}</span><span class=&quot;text-xs font-bold ${st.text}&quot;>${p.progress}%</span></div><div class=&quot;w-full bg-slate-100 rounded-full h-2.5 overflow-hidden&quot;><div class=&quot;${st.bar} h-2.5 rounded-full transition-all&quot; style=&quot;width:${p.progress}%&quot;></div></div></div><div class=&quot;flex items-center gap-5 mt-4 pt-4 border-t border-slate-100 text-xs text-slate-400&quot;><span><i class=&quot;fa-regular fa-calendar-plus mr-1&quot;></i>${fmtDateFull(p.start)}</span><span><i class=&quot;fa-regular fa-calendar-check mr-1&quot;></i>${fmtDateFull(p.due)}</span></div></div></div>`; }).join(&quot;&quot;); }
+    function openProjectModal(id){ document.getElementById(&quot;projNameError&quot;).classList.add(&quot;hidden&quot;); if(id){ const p=getProjects().find(x=>x.id===id); document.getElementById(&quot;projectModalTitle&quot;).textContent=&quot;Edit Project&quot;; document.getElementById(&quot;projId&quot;).value=p.id; document.getElementById(&quot;projName&quot;).value=p.name; document.getElementById(&quot;projDesc&quot;).value=p.desc||&quot;&quot;; document.getElementById(&quot;projTech&quot;).value=(p.tech||[]).join(&quot;, &quot;); document.getElementById(&quot;projStart&quot;).value=p.start||&quot;&quot;; document.getElementById(&quot;projDue&quot;).value=p.due||&quot;&quot;; document.getElementById(&quot;projStatus&quot;).value=p.status; document.getElementById(&quot;projProgress&quot;).value=p.progress; document.getElementById(&quot;projTask&quot;).value=p.task||&quot;&quot;; } else { document.getElementById(&quot;projectModalTitle&quot;).textContent=&quot;Add Project&quot;; [&quot;projId&quot;,&quot;projName&quot;,&quot;projDesc&quot;,&quot;projTech&quot;,&quot;projStart&quot;,&quot;projDue&quot;,&quot;projTask&quot;].forEach(i=>document.getElementById(i).value=&quot;&quot;); document.getElementById(&quot;projStatus&quot;).value=&quot;Active&quot;; document.getElementById(&quot;projProgress&quot;).value=50; } document.getElementById(&quot;projProgValue&quot;).textContent=document.getElementById(&quot;projProgress&quot;).value+&quot;%&quot;; document.getElementById(&quot;projectModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeProjectModal(){ document.getElementById(&quot;projectModal&quot;).classList.add(&quot;hidden&quot;); }
+    function saveProject(){ const name=document.getElementById(&quot;projName&quot;).value.trim(); if(!name){ document.getElementById(&quot;projNameError&quot;).classList.remove(&quot;hidden&quot;); return; } const id=document.getElementById(&quot;projId&quot;).value; const data={name,desc:document.getElementById(&quot;projDesc&quot;).value.trim(),tech:document.getElementById(&quot;projTech&quot;).value.split(&quot;,&quot;).map(t=>t.trim()).filter(Boolean),start:document.getElementById(&quot;projStart&quot;).value,due:document.getElementById(&quot;projDue&quot;).value,status:document.getElementById(&quot;projStatus&quot;).value,progress:parseInt(document.getElementById(&quot;projProgress&quot;).value),task:document.getElementById(&quot;projTask&quot;).value.trim()}; let projects=getProjects(); if(id){ projects=projects.map(p=>p.id===id?{...p,...data}:p); toast(&quot;Project updated.&quot;); } else { projects.unshift({id:uid(&quot;pr&quot;),...data}); toast(&quot;Project added.&quot;); } setProjects(projects); closeProjectModal(); renderProjects(); renderDashProjects(); renderStats(); }
+    let pendingProjectDelete=null;
+    function askDeleteProject(id){ pendingProjectDelete=id; const p=getProjects().find(x=>x.id===id); document.getElementById(&quot;projectConfirmName&quot;).textContent=p?p.name:&quot;&quot;; document.getElementById(&quot;projectConfirmModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeProjectConfirm(){ document.getElementById(&quot;projectConfirmModal&quot;).classList.add(&quot;hidden&quot;); pendingProjectDelete=null; }
+    function doDeleteProject(){ setProjects(getProjects().filter(p=>p.id!==pendingProjectDelete)); closeProjectConfirm(); renderProjects(); renderDashProjects(); renderStats(); toast(&quot;Project removed.&quot;,&quot;fa-trash&quot;); }
+
+    /* ================= CONNECTIONS ================= */
+    const EMPLOYEES = [
+        { id:&quot;e1&quot;, name:&quot;David Chen&quot;, role:&quot;Manager&quot;, dept:&quot;Technology Advisory&quot;, team:&quot;Cloud Solutions&quot;, email:&quot;david.chen@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Azure&quot;,&quot;Solution Architecture&quot;,&quot;Node.js&quot;,&quot;Leadership&quot;], interests:[&quot;Cloud&quot;,&quot;Mentoring&quot;,&quot;AI / ML&quot;], bio:&quot;Leads the Cloud Solutions team. Passionate about mentoring interns and modern cloud architecture.&quot; },
+        { id:&quot;e2&quot;, name:&quot;Sara Malik&quot;, role:&quot;Senior Consultant&quot;, dept:&quot;Data &amp; Analytics&quot;, team:&quot;Insights&quot;, email:&quot;sara.malik@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;SQL&quot;,&quot;Python&quot;,&quot;Power BI&quot;,&quot;Machine Learning&quot;], interests:[&quot;Data Engineering&quot;,&quot;AI / ML&quot;,&quot;Visualization&quot;], bio:&quot;Builds analytics pipelines and dashboards for major clients. Loves teaching SQL and Python.&quot; },
+        { id:&quot;e3&quot;, name:&quot;Tom Becker&quot;, role:&quot;Cloud Engineer&quot;, dept:&quot;Cloud Engineering&quot;, team:&quot;Platform&quot;, email:&quot;tom.becker@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;AWS&quot;,&quot;Azure&quot;,&quot;Kubernetes&quot;,&quot;Terraform&quot;], interests:[&quot;Cloud&quot;,&quot;DevOps&quot;,&quot;Automation&quot;], bio:&quot;Automates infrastructure at scale. Happy to chat about cloud certs and DevOps careers.&quot; },
+        { id:&quot;e4&quot;, name:&quot;Lena Torres&quot;, role:&quot;Security Analyst&quot;, dept:&quot;Cybersecurity&quot;, team:&quot;Threat Intel&quot;, email:&quot;lena.torres@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Threat Modeling&quot;,&quot;Python&quot;,&quot;SIEM&quot;,&quot;Incident Response&quot;], interests:[&quot;Security&quot;,&quot;AI / ML&quot;,&quot;Privacy&quot;], bio:&quot;Investigates threats and hardens client systems. Enjoys mentoring on security fundamentals.&quot; },
+        { id:&quot;e5&quot;, name:&quot;James O'Neil&quot;, role:&quot;Partner&quot;, dept:&quot;Consulting&quot;, team:&quot;Strategy&quot;, email:&quot;james.oneil@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Strategy&quot;,&quot;Client Management&quot;,&quot;Public Speaking&quot;], interests:[&quot;Consulting&quot;,&quot;Leadership&quot;,&quot;Career Growth&quot;], bio:&quot;Advises C-suite clients on transformation strategy. Open to career conversations with interns.&quot; },
+        { id:&quot;e6&quot;, name:&quot;Priya Nair&quot;, role:&quot;Manager&quot;, dept:&quot;Audit&quot;, team:&quot;Financial Services&quot;, email:&quot;priya.nair@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Auditing&quot;,&quot;Excel&quot;,&quot;Risk&quot;,&quot;IFRS&quot;], interests:[&quot;Finance&quot;,&quot;Process&quot;,&quot;Mentoring&quot;], bio:&quot;Runs audit engagements for banks. Great for understanding the audit career track.&quot; },
+        { id:&quot;e7&quot;, name:&quot;Marcus Webb&quot;, role:&quot;Data Engineer&quot;, dept:&quot;Data &amp; Analytics&quot;, team:&quot;Platform&quot;, email:&quot;marcus.webb@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Python&quot;,&quot;Spark&quot;,&quot;SQL&quot;,&quot;Airflow&quot;], interests:[&quot;Data Engineering&quot;,&quot;Cloud&quot;,&quot;Automation&quot;], bio:&quot;Designs large-scale data platforms. Loves talking pipelines, Spark, and Python.&quot; },
+        { id:&quot;e8&quot;, name:&quot;Emma Larsson&quot;, role:&quot;UX Designer&quot;, dept:&quot;Technology Advisory&quot;, team:&quot;Product Design&quot;, email:&quot;emma.larsson@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Figma&quot;,&quot;User Research&quot;,&quot;Prototyping&quot;,&quot;React&quot;], interests:[&quot;Design&quot;,&quot;AI / ML&quot;,&quot;Accessibility&quot;], bio:&quot;Designs intuitive client products. Happy to review portfolios and talk product design.&quot; },
+        { id:&quot;e9&quot;, name:&quot;Ahmed Hassan&quot;, role:&quot;Tax Consultant&quot;, dept:&quot;Tax&quot;, team:&quot;Corporate Tax&quot;, email:&quot;ahmed.hassan@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Tax Law&quot;,&quot;Excel&quot;,&quot;Advisory&quot;,&quot;Compliance&quot;], interests:[&quot;Finance&quot;,&quot;Policy&quot;,&quot;Consulting&quot;], bio:&quot;Advises multinational clients on corporate tax. Can explain the tax advisory path.&quot; },
+        { id:&quot;e10&quot;, name:&quot;Grace Kim&quot;, role:&quot;People &amp; Culture Lead&quot;, dept:&quot;People&quot;, team:&quot;Talent&quot;, email:&quot;grace.kim@internhub.com&quot;, avatar:&quot;https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&amp;fit=crop&amp;q=80&amp;w=200&quot;, skills:[&quot;Coaching&quot;,&quot;Recruiting&quot;,&quot;L&amp;D&quot;,&quot;Communication&quot;], interests:[&quot;Mentoring&quot;,&quot;Career Growth&quot;,&quot;Wellbeing&quot;], bio:&quot;Supports intern development and career growth across the firm. Your go-to for career advice.&quot; }
+    ];
+    function populateDepts(){ const depts=[&quot;All departments&quot;,...new Set(EMPLOYEES.map(e=>e.dept))]; const cur=document.getElementById(&quot;deptFilter&quot;).value; document.getElementById(&quot;deptFilter&quot;).innerHTML=depts.map(d=>`<option value=&quot;${d==='All departments'?'':d}&quot;>${d}</option>`).join(&quot;&quot;); if(cur) document.getElementById(&quot;deptFilter&quot;).value=cur; }
+    function empCard(e){ return `<button onclick=&quot;openEmp('${e.id}')&quot; class=&quot;text-left bg-white/10 border border-white/20 hover:bg-white/20 rounded-xl p-4 transition w-full&quot;><div class=&quot;flex items-center gap-3&quot;><img src=&quot;${e.avatar}&quot; class=&quot;w-11 h-11 rounded-xl object-cover shrink-0&quot;><div class=&quot;min-w-0&quot;><p class=&quot;font-bold text-white truncate&quot;>${esc(e.name)}</p><p class=&quot;text-xs text-blue-100 truncate&quot;>${esc(e.role)} · ${esc(e.dept)}</p></div></div></button>`; }
+    function renderDirectory(){ const q=document.getElementById(&quot;searchInput&quot;).value.trim().toLowerCase(); const dept=document.getElementById(&quot;deptFilter&quot;).value; const list=EMPLOYEES.filter(e=>{ if(dept&amp;&amp;e.dept!==dept) return false; if(!q) return true; return (e.name+&quot; &quot;+e.role+&quot; &quot;+e.dept+&quot; &quot;+e.team+&quot; &quot;+e.skills.join(&quot; &quot;)+&quot; &quot;+e.interests.join(&quot; &quot;)).toLowerCase().includes(q); }); const wrap=document.getElementById(&quot;directory&quot;); const empty=document.getElementById(&quot;dirEmpty&quot;); if(list.length===0){ empty.classList.remove(&quot;hidden&quot;); wrap.innerHTML=&quot;&quot;; return; } empty.classList.add(&quot;hidden&quot;); wrap.innerHTML=list.map(e=>`<div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex flex-col&quot;><div class=&quot;flex items-center gap-3&quot;><img src=&quot;${e.avatar}&quot; class=&quot;w-12 h-12 rounded-xl object-cover shrink-0&quot;><div class=&quot;min-w-0&quot;><p class=&quot;font-bold text-slate-800 truncate&quot;>${esc(e.name)}</p><p class=&quot;text-xs text-slate-400 truncate&quot;>${esc(e.role)}</p></div></div><p class=&quot;text-xs text-slate-500 mt-3&quot;><i class=&quot;fa-solid fa-building w-4 text-slate-400&quot;></i> ${esc(e.dept)} · ${esc(e.team)}</p><div class=&quot;flex flex-wrap gap-1.5 mt-3&quot;>${e.skills.slice(0,3).map(s=>`<span class=&quot;text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full&quot;>${esc(s)}</span>`).join(&quot;&quot;)}</div><button onclick=&quot;openEmp('${e.id}')&quot; class=&quot;mt-4 bg-slate-100 hover:bg-kpmgBlue hover:text-white text-slate-700 text-sm font-semibold py-2 rounded-xl transition&quot;>View profile</button></div>`).join(&quot;&quot;); }
+    function renderSuggestions(){ const p=getProfile(); const interests=(p.interests||[]).map(s=>s.toLowerCase()); const scored=EMPLOYEES.map(e=>{ const pool=[...e.interests,...e.skills].map(s=>s.toLowerCase()); let score=0; interests.forEach(i=>{ if(pool.some(x=>x.includes(i)||i.includes(x))) score++; }); return {e,score}; }).sort((a,b)=>b.score-a.score); const top=scored.filter(s=>s.score>0).slice(0,3); const picks=(top.length?top:scored.slice(0,3)).map(s=>s.e); document.getElementById(&quot;aiSuggestNote&quot;).textContent=(p.interests&amp;&amp;p.interests.length?&quot;Matched to your interests: &quot;+p.interests.join(&quot;, &quot;):&quot;Popular people to meet&quot;); document.getElementById(&quot;aiSuggestions&quot;).innerHTML=picks.map(empCard).join(&quot;&quot;); }
+    function openEmp(id){ const e=EMPLOYEES.find(x=>x.id===id); if(!e) return; document.getElementById(&quot;empAvatar&quot;).src=e.avatar; document.getElementById(&quot;empName&quot;).textContent=e.name; document.getElementById(&quot;empRole&quot;).textContent=e.role+&quot; · &quot;+e.dept; document.getElementById(&quot;empMeta&quot;).innerHTML=`<span><i class=&quot;fa-solid fa-users-line w-4 text-slate-400&quot;></i> ${esc(e.team)}</span><span><i class=&quot;fa-regular fa-envelope w-4 text-slate-400&quot;></i> ${esc(e.email)}</span>`; document.getElementById(&quot;empBio&quot;).textContent=e.bio; document.getElementById(&quot;empSkills&quot;).innerHTML=e.skills.map(s=>`<span class=&quot;text-xs font-semibold text-kpmgBlue bg-blue-50 px-2.5 py-1 rounded-full&quot;>${esc(s)}</span>`).join(&quot;&quot;); document.getElementById(&quot;empInterests&quot;).innerHTML=e.interests.map(s=>`<span class=&quot;text-xs font-semibold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full&quot;>${esc(s)}</span>`).join(&quot;&quot;); const me=getProfile().name||&quot;an intern&quot;; const subject=encodeURIComponent(`Coffee chat request — from ${me}`); const body=encodeURIComponent(`Hi ${e.name.split(&quot; &quot;)[0]},\n\nI'm ${me}, currently interning at the firm. I'd love to learn more about your work in ${e.dept} (${e.team}). Would you be open to a 15–20 min coffee chat sometime this week?\n\nThank you!\n${me}`); document.getElementById(&quot;empOutlook&quot;).href=`https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(e.email)}&amp;subject=${subject}&amp;body=${body}`; document.getElementById(&quot;empTeams&quot;).href=`https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(e.email)}&amp;message=${encodeURIComponent(`Hi ${e.name.split(&quot; &quot;)[0]}, I'm ${me} — could we grab a quick coffee chat this week?`)}`; document.getElementById(&quot;empModal&quot;).classList.remove(&quot;hidden&quot;); }
+    function closeEmp(){ document.getElementById(&quot;empModal&quot;).classList.add(&quot;hidden&quot;); }
+
+    /* ================= FEEDBACK (read-only for interns) ================= */
+    const DEFAULT_FEEDBACK = [
+        { id:uid(&quot;fb&quot;), project:&quot;AI Resource Allocation Tool&quot;, manager:&quot;David Chen&quot;, date:&quot;2026-05-22&quot;, rating:5, strengths:[&quot;Problem Solving&quot;,&quot;Python&quot;,&quot;Initiative&quot;], improvements:[&quot;Documentation&quot;,&quot;Testing&quot;], comments:&quot;Outstanding delivery. Aisha independently designed the matching logic and shipped ahead of schedule. Focus next on writing more thorough docs and unit tests.&quot; },
+        { id:uid(&quot;fb&quot;), project:&quot;Global Web Audit&quot;, manager:&quot;David Chen&quot;, date:&quot;2026-06-30&quot;, rating:4, strengths:[&quot;SQL&quot;,&quot;Attention to Detail&quot;,&quot;Communication&quot;], improvements:[&quot;Time Management&quot;,&quot;Testing&quot;], comments:&quot;Strong analytical work on the DB schema review. Communicated findings clearly to the team. Watch estimation on larger tasks — a couple slipped.&quot; },
+        { id:uid(&quot;fb&quot;), project:&quot;Client Onboarding Dashboard&quot;, manager:&quot;Sara Malik&quot;, date:&quot;2026-07-08&quot;, rating:4, strengths:[&quot;React&quot;,&quot;Problem Solving&quot;,&quot;Collaboration&quot;], improvements:[&quot;Time Management&quot;,&quot;Accessibility&quot;], comments:&quot;Great progress on the dashboard components. Very collaborative in standups. Bring more focus to accessibility and pacing across sprints.&quot; }
+    ];
+    function getFeedback(){ let f=load(&quot;project_feedback&quot;,null); if(f===null){ f=DEFAULT_FEEDBACK; store(&quot;project_feedback&quot;,f);} return f; }
+    function stars(n){ let s=&quot;&quot;; for(let i=1;i<=5;i++) s+=`<i class=&quot;fa-${i<=n?'solid':'regular'} fa-star&quot;></i>`; return s; }
+    function tally(arr){ const m={}; arr.forEach(x=>{ const k=x.trim(); if(k) m[k]=(m[k]||0)+1; }); return Object.entries(m).sort((a,b)=>b[1]-a[1]); }
+    function renderFeedback(){
+        const fb=getFeedback().slice().sort((a,b)=>new Date(b.date)-new Date(a.date)); const count=fb.length; const avg=count?(fb.reduce((a,f)=>a+f.rating,0)/count):0;
+        document.getElementById(&quot;statAvg&quot;).innerHTML=count?avg.toFixed(1)+' <span class=&quot;text-base text-amber-400&quot;><i class=&quot;fa-solid fa-star&quot;></i></span>':&quot;—&quot;;
+        document.getElementById(&quot;statCount&quot;).textContent=count; document.getElementById(&quot;statProjects&quot;).textContent=new Set(fb.map(f=>f.project)).size;
+        const byDate=fb.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)); const trendEl=document.getElementById(&quot;statTrend&quot;);
+        if(byDate.length>=2){ const mid=Math.floor(byDate.length/2); const early=byDate.slice(0,mid),late=byDate.slice(mid); const em=early.reduce((a,f)=>a+f.rating,0)/early.length; const lm=late.reduce((a,f)=>a+f.rating,0)/late.length; trendEl.textContent=lm>em?'↑ Improving':lm<em?'↓ Dipping':'→ Steady'; trendEl.className=&quot;text-2xl font-extrabold mt-1 &quot;+(lm>em?'text-emerald-600':lm<em?'text-rose-500':'text-slate-500'); } else { trendEl.textContent=&quot;—&quot;; }
+        renderAISummary(fb);
+        const wrap=document.getElementById(&quot;history&quot;); const empty=document.getElementById(&quot;historyEmpty&quot;);
+        if(fb.length===0){ empty.classList.remove(&quot;hidden&quot;); wrap.innerHTML=&quot;&quot;; return; } empty.classList.add(&quot;hidden&quot;);
+        wrap.innerHTML=fb.map(f=>`<div class=&quot;bg-white border border-slate-200 rounded-2xl shadow-sm p-6&quot;><div class=&quot;flex items-start justify-between gap-3&quot;><div class=&quot;min-w-0&quot;><h3 class=&quot;font-bold text-slate-800&quot;>${esc(f.project)}</h3><p class=&quot;text-xs text-slate-400 mt-0.5&quot;><i class=&quot;fa-solid fa-user-tie mr-1&quot;></i>${esc(f.manager)} · ${fmtDateFull(f.date)}</p></div><span class=&quot;text-amber-400 text-sm shrink-0&quot;>${stars(f.rating)}</span></div><div class=&quot;grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4&quot;><div><p class=&quot;text-xs font-bold uppercase tracking-wider text-emerald-600 mb-1.5&quot;><i class=&quot;fa-solid fa-thumbs-up mr-1&quot;></i>Strengths</p><div class=&quot;flex flex-wrap gap-1.5&quot;>${(f.strengths||[]).map(s=>`<span class=&quot;text-[11px] font-semibold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full&quot;>${esc(s)}</span>`).join(&quot;&quot;)||'<span class=&quot;text-xs text-slate-300&quot;>—</span>'}</div></div><div><p class=&quot;text-xs font-bold uppercase tracking-wider text-amber-600 mb-1.5&quot;><i class=&quot;fa-solid fa-arrow-trend-up mr-1&quot;></i>Areas to improve</p><div class=&quot;flex flex-wrap gap-1.5&quot;>${(f.improvements||[]).map(s=>`<span class=&quot;text-[11px] font-semibold bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full&quot;>${esc(s)}</span>`).join(&quot;&quot;)||'<span class=&quot;text-xs text-slate-300&quot;>—</span>'}</div></div></div>${f.comments?`<p class=&quot;text-sm text-slate-600 mt-4 pt-4 border-t border-slate-100 leading-relaxed&quot;>${esc(f.comments)}</p>`:&quot;&quot;}</div>`).join(&quot;&quot;);
+    }
+    function renderAISummary(fb){ const box=document.getElementById(&quot;aiSummary&quot;); if(fb.length===0){ box.innerHTML='<p class=&quot;text-sm text-blue-100 md:col-span-2&quot;>No feedback yet. Your managers'+&quot;'&quot;+' reviews will appear here with an AI summary.</p>'; return; } const strengths=tally(fb.flatMap(f=>f.strengths||[])); const improvements=tally(fb.flatMap(f=>f.improvements||[])); const avg=(fb.reduce((a,f)=>a+f.rating,0)/fb.length).toFixed(1); const rec=arr=>arr.filter(([_,c])=>c>=2).map(([k])=>k); const topS=rec(strengths).length?rec(strengths):strengths.slice(0,3).map(([k])=>k); const topI=rec(improvements).length?rec(improvements):improvements.slice(0,3).map(([k])=>k); const pill=(items,cls)=>items.map(k=>`<span class=&quot;text-xs font-semibold ${cls} px-2.5 py-1 rounded-full&quot;>${esc(k)}</span>`).join(&quot; &quot;)||'<span class=&quot;text-xs text-blue-100&quot;>Not enough data yet</span>'; box.innerHTML=`<div class=&quot;bg-white/10 rounded-xl p-4&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-emerald-300 mb-2&quot;><i class=&quot;fa-solid fa-thumbs-up mr-1&quot;></i>Recurring strengths</p><div class=&quot;flex flex-wrap gap-2&quot;>${pill(topS,'bg-emerald-400/20 text-emerald-100')}</div></div><div class=&quot;bg-white/10 rounded-xl p-4&quot;><p class=&quot;text-xs font-bold uppercase tracking-wider text-amber-300 mb-2&quot;><i class=&quot;fa-solid fa-arrow-trend-up mr-1&quot;></i>Recurring areas to improve</p><div class=&quot;flex flex-wrap gap-2&quot;>${pill(topI,'bg-amber-400/20 text-amber-100')}</div></div><div class=&quot;md:col-span-2 text-sm text-blue-50 leading-relaxed bg-white/5 rounded-xl p-4&quot;><i class=&quot;fa-solid fa-quote-left text-kpmgTeal mr-1&quot;></i> Across <b>${fb.length}</b> reviews (avg <b>${avg}★</b>), managers consistently highlight <b>${topS.slice(0,2).join(&quot; and &quot;)||&quot;strong contributions&quot;}</b>. The clearest growth theme is <b>${topI.slice(0,2).join(&quot; and &quot;)||&quot;continued development&quot;}</b> — a focused goal for the coming projects.</div>`; }
+
+    /* ================= MODAL BACKDROP CLOSE ================= */
+    [&quot;editModal&quot;,&quot;skillModal&quot;,&quot;skillConfirmModal&quot;,&quot;projectModal&quot;,&quot;projectConfirmModal&quot;,&quot;empModal&quot;].forEach(id=>{ document.getElementById(id).addEventListener(&quot;click&quot;, e=>{ if(e.target.id===id) document.getElementById(id).classList.add(&quot;hidden&quot;); }); });
+
+    /* ================= CHARTS ================= */
+    /* ================= INIT (render everything — all visible) ================= */
+    renderProfile(); renderSkills(); renderProjects(); renderDashProjects();
+    renderAttendance(); renderManagers(); renderDays(); renderSlots(); renderBookings(); updateConfirmState();
+    populateDepts(); renderSuggestions(); renderDirectory();
+    renderFeedback(); renderStats();
+    setActiveNav(&quot;sec-overview&quot;); initScrollspy();
+    </script>
+</body>
+</html>
+</html>
+" onload="internsLoaded()"></iframe>
+                        <div id="internsFallback" class="absolute inset-0 flex items-center justify-center p-8 bg-slate-50">
+                            <div class="text-center max-w-md">
+                                <div class="w-16 h-16 rounded-2xl bg-white border border-slate-200 shadow-sm mx-auto flex items-center justify-center text-brandBlue text-2xl"><i class="fa-solid fa-user-graduate"></i></div>
+                                <h2 class="text-lg font-bold text-slate-800 mt-4">Opening the Intern Hub…</h2>
+                                <p class="text-sm text-slate-500 mt-2 leading-relaxed">This is fully embedded in the page. If it stays blank, open it directly:</p>
+                                <a href="#" onclick="openInternsNewTab();return false;" class="inline-flex items-center gap-2 mt-4 bg-brandBlue hover:bg-blue-900 text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Intern Hub</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="panel-links" class="tabpanel absolute inset-0 overflow-auto p-8 hidden">
+                <div class="max-w-6xl mx-auto space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-diagram-project text-brandLight"></i> Resource Links</h1>
+                            <p class="text-sm text-slate-500 mt-1">A cleaner, organized directory of your cloud resources — a simpler replacement for the portal.</p>
+                        </div>
+                        <button onclick="openLinkModal()" class="bg-brandBlue hover:bg-blue-900 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition shadow-sm flex items-center justify-center gap-2 whitespace-nowrap"><i class="fa-solid fa-plus text-xs"></i> Add Resource</button>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Resources</span><i class="fa-solid fa-server text-brandBlue"></i></div><p id="lkTotal" class="text-2xl font-extrabold text-slate-800 mt-1">0</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Running</span><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span></div><p id="lkRunning" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Resource Groups</span><i class="fa-solid fa-layer-group text-brandTeal"></i></div><p id="lkGroups" class="text-2xl font-extrabold text-brandTeal mt-1">0</p></div>
+                        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"><div class="flex items-center justify-between"><span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Regions</span><i class="fa-solid fa-earth-americas text-brandLight"></i></div><p id="lkRegions" class="text-2xl font-extrabold text-brandLight mt-1">0</p></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-4 flex flex-col lg:flex-row gap-3">
+                        <div class="relative flex-grow"><i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i><input id="lkSearch" oninput="renderLinks()" type="text" placeholder="Search name, group, subscription, ID…" class="w-full border border-slate-200 rounded-xl pl-9 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue/30 focus:border-brandBlue"></div>
+                        <select id="lkStatus" onchange="renderLinks()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brandBlue/30"><option value="">All statuses</option><option>Running</option><option>Stopped</option><option>Provisioning</option><option>Degraded</option></select>
+                        <select id="lkRegion" onchange="renderLinks()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brandBlue/30"></select>
+                        <select id="lkGroup" onchange="renderLinks()" class="border border-slate-200 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brandBlue/30"></select>
+                    </div>
+                    <div id="linksBody" class="space-y-4"></div>
+                    <div id="linksEmpty" class="hidden bg-white border border-dashed border-slate-300 rounded-2xl p-10 text-center"><i class="fa-solid fa-inbox text-3xl text-slate-300"></i><p class="text-slate-500 mt-3 font-medium">No resources match your filters.</p></div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<div id="linkModal" class="hidden fixed inset-0 z-[70] bg-slate-900/50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden my-8">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between"><h3 id="linkModalTitle" class="font-bold text-slate-800">Add Resource</h3><button onclick="closeLinkModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button></div>
+        <div class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+            <input type="hidden" id="lkId">
+            <div><label class="lbl">Resource name</label><input id="lkName" class="inp" placeholder="e.g. intern-portal-prod"><p id="lkNameErr" class="hidden text-xs text-rose-500 mt-1">Please enter a name.</p></div>
+            <div><label class="lbl">URL / Link</label><input id="lkUrl" class="inp" placeholder="https://…"></div>
+            <div><label class="lbl">Description</label><textarea id="lkDesc" rows="3" class="inp resize-none" placeholder="What is this resource and what is it used for?"></textarea></div>
+            <div class="grid grid-cols-2 gap-4">
+                <div><label class="lbl">Resource group</label><input id="lkRg" class="inp" placeholder="e.g. rg-intern-apps"></div>
+                <div><label class="lbl">Status</label><select id="lkStatusIn" class="inp bg-white"><option>Running</option><option>Stopped</option><option>Provisioning</option><option>Degraded</option></select></div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div><label class="lbl">Location</label><input id="lkLoc" class="inp" placeholder="e.g. Qatar Central"></div>
+                <div><label class="lbl">Subscription</label><input id="lkSub" class="inp" placeholder="e.g. Production"></div>
+            </div>
+            <div><label class="lbl">Subscription ID</label><input id="lkSubId" class="inp mono" placeholder="00000000-0000-0000-0000-000000000000"></div>
+        </div>
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center gap-3">
+            <button id="lkDeleteBtn" onclick="deleteLink()" class="hidden text-sm font-semibold text-rose-500 hover:bg-rose-50 px-3 py-2 rounded-xl transition"><i class="fa-solid fa-trash mr-1"></i>Delete</button>
+            <div class="flex gap-3 ml-auto"><button onclick="closeLinkModal()" class="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-xl transition">Cancel</button><button onclick="saveLink()" class="px-4 py-2 text-sm font-semibold text-white bg-brandBlue hover:bg-blue-900 rounded-xl transition">Save</button></div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="hidden fixed bottom-6 right-6 z-[80] bg-slate-900 text-white text-sm px-4 py-3 rounded-xl shadow-2xl flex items-center space-x-2"></div>
+
+<script>
+    document.querySelectorAll('.inp').forEach(el=>el.className=(el.className.replace('inp','')+' w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandBlue/30 focus:border-brandBlue').trim());
+    document.querySelectorAll('.lbl').forEach(el=>el.className=(el.className.replace('lbl','')+' text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1.5').trim());
+</script>
+<script>
+    function store(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+    function load(k,f){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):f; }catch(e){ return f; } }
+    function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+    function uid(){ return "lk_"+Date.now()+"_"+Math.floor(Math.random()*1000); }
+    function toast(msg, icon="fa-circle-check"){ const t=document.getElementById("toast"); t.innerHTML=`<i class="fa-solid ${icon} text-emerald-400"></i><span>${msg}</span>`; t.classList.remove("hidden"); clearTimeout(window._t); window._t=setTimeout(()=>t.classList.add("hidden"),3000); }
+
+    function internsLoaded(){ try{ document.getElementById("internsFallback").classList.add("hidden"); }catch(e){} }
+    function openInternsNewTab(){ try{ const html=document.getElementById("internsFrame").srcdoc; const w=window.open("","_blank"); if(w){ w.document.open(); w.document.write(html); w.document.close(); } }catch(e){} }
+
+    const TABS = {
+        creation:{ title:"Creation", sub:"User provisioning", icon:"fa-user-plus" },
+        password:{ title:"Password", sub:"Credential & reset management", icon:"fa-key" },
+        search:{ title:"Deep Search", sub:"Cross-directory lookup", icon:"fa-magnifying-glass-chart" },
+        dashboard:{ title:"Dashboard", sub:"Team overview & metrics", icon:"fa-gauge-high" },
+        interns:{ title:"Interns", sub:"Intern development hub", icon:"fa-user-graduate" },
+        links:{ title:"Links", sub:"Cloud resource directory", icon:"fa-diagram-project" }
+    };
+    const EMPTY_MODULES = {
+        creation:{ icon:"fa-user-plus", blurb:"Provision new internal users, assign roles, and manage onboarding here." },
+        password:{ icon:"fa-key", blurb:"Reset credentials, enforce policies, and manage password lifecycles here." },
+        search:{ icon:"fa-magnifying-glass-chart", blurb:"Run deep cross-directory searches across users, groups, and resources here." },
+        dashboard:{ icon:"fa-gauge-high", blurb:"A team-wide overview with live metrics and activity will live here." }
+    };
+    function renderEmpty(tab){
+        const m=EMPTY_MODULES[tab]; if(!m) return;
+        document.getElementById("panel-"+tab).innerHTML=`
+            <div class="max-w-2xl mx-auto mt-16 text-center">
+                <div class="w-20 h-20 rounded-2xl bg-white border border-slate-200 shadow-sm mx-auto flex items-center justify-center text-brandBlue text-3xl"><i class="fa-solid ${m.icon}"></i></div>
+                <h1 class="text-2xl font-bold text-slate-800 mt-6">${TABS[tab].title}</h1>
+                <p class="text-slate-500 mt-2 leading-relaxed">${m.blurb}</p>
+                <span class="inline-flex items-center gap-2 mt-6 text-xs font-semibold text-brandBlue bg-blue-50 px-3 py-1.5 rounded-full"><i class="fa-solid fa-hammer"></i> Module coming soon</span>
+            </div>`;
+    }
+
+    function showTab(tab){
+        document.querySelectorAll(".tabpanel").forEach(p=>p.classList.toggle("hidden", p.id!=="panel-"+tab));
+        document.querySelectorAll(".navitem").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab));
+        const meta=TABS[tab];
+        document.getElementById("crumbTitle").textContent=meta.title;
+        document.getElementById("crumbSub").textContent=meta.sub;
+        document.getElementById("crumbIcon").innerHTML=`<i class="fa-solid ${meta.icon}"></i>`;
+        try{ history.replaceState(null,"","#"+tab); }catch(e){}
+    }
+
+    const DEFAULT_LINKS = [
+        { id:uid(), name:"intern-portal-prod", url:"https://intern-portal.internal.app", desc:"Production web application powering the intern development hub. Hosts profiles, skills, projects, connections, and manager feedback for all active interns. This is the customer-facing endpoint served to end users and should always remain available.", rg:"rg-intern-apps", status:"Running", loc:"Qatar Central", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"user-mgmt-api", url:"https://api.users.internal.app", desc:"Core REST API responsible for user provisioning, authentication, and role assignment across the internal platform. Consumed by the Creation and Password modules, it is a critical shared service with strict uptime requirements.", rg:"rg-core-services", status:"Running", loc:"Qatar Central", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"deep-search-index", url:"https://search.internal.app", desc:"Search indexing service that powers cross-directory Deep Search queries over users, groups, and resources. Currently provisioning additional capacity to handle a growing document set.", rg:"rg-search", status:"Provisioning", loc:"UAE North", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"identity-sql", url:"https://portal.internal.app/sql/identity", desc:"Managed SQL database storing identity records, credentials metadata, and audit references. Backs the user management API and is protected by private networking and automated backups.", rg:"rg-core-services", status:"Running", loc:"Qatar Central", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"intern-dev-web", url:"https://dev.intern-portal.internal.app", desc:"Development environment for the intern portal, used to test new features before they reach production. Currently stopped to save cost outside of active development sprints.", rg:"rg-intern-apps", status:"Stopped", loc:"West Europe", sub:"Development", subId:"f9e8d7c6-2222-4b3c-8d4e-90a1b2c3d4e5" },
+        { id:uid(), name:"password-reset-fn", url:"https://fn.reset.internal.app", desc:"Serverless function that handles secure password reset and credential-rotation workflows. Triggered by the Password module and integrated with the notification service for one-time links.", rg:"rg-core-services", status:"Running", loc:"UAE North", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"audit-log-storage", url:"https://storage.internal.app/audit", desc:"Immutable storage account that retains audit logs and activity trails for compliance. Every user-management action is written here for traceability and long-term retention.", rg:"rg-observability", status:"Running", loc:"Qatar Central", sub:"Production", subId:"a1b2c3d4-1111-4a2b-9c3d-56e7f8a9b0c1" },
+        { id:uid(), name:"search-staging", url:"https://staging.search.internal.app", desc:"Staging instance of the search service used for validation before promoting changes to production. Currently reporting a degraded state due to an ongoing index rebuild.", rg:"rg-search", status:"Degraded", loc:"West Europe", sub:"Staging", subId:"77c0ffee-3333-4c4d-9e5f-a1b2c3d4e5f6" }
+    ];
+    function getLinks(){ let l=load("resource_links",null); if(l===null){ l=DEFAULT_LINKS; store("resource_links",l);} return l; }
+    function setLinks(l){ store("resource_links",l); }
+    const STATUS_PILL = {
+        "Running":{cls:"bg-emerald-50 text-emerald-700",dot:"bg-emerald-500"},
+        "Stopped":{cls:"bg-slate-100 text-slate-600",dot:"bg-slate-400"},
+        "Provisioning":{cls:"bg-amber-50 text-amber-700",dot:"bg-amber-500"},
+        "Degraded":{cls:"bg-rose-50 text-rose-700",dot:"bg-rose-500"}
+    };
+    function copyText(txt, label){ try{ navigator.clipboard && navigator.clipboard.writeText(txt); }catch(e){} toast((label||"Copied")+" copied to clipboard","fa-copy"); }
+    function populateFilters(){
+        const all=getLinks();
+        const regions=[...new Set(all.map(l=>l.loc))].sort();
+        const groups=[...new Set(all.map(l=>l.rg))].sort();
+        const rSel=document.getElementById("lkRegion"), gSel=document.getElementById("lkGroup");
+        const rCur=rSel.value, gCur=gSel.value;
+        rSel.innerHTML=`<option value="">All locations</option>`+regions.map(r=>`<option>${esc(r)}</option>`).join("");
+        gSel.innerHTML=`<option value="">All resource groups</option>`+groups.map(g=>`<option>${esc(g)}</option>`).join("");
+        if(rCur) rSel.value=rCur; if(gCur) gSel.value=gCur;
+    }
+    function renderStats(){
+        const all=getLinks();
+        document.getElementById("lkTotal").textContent=all.length;
+        document.getElementById("lkRunning").textContent=all.filter(l=>l.status==="Running").length;
+        document.getElementById("lkGroups").textContent=new Set(all.map(l=>l.rg)).size;
+        document.getElementById("lkRegions").textContent=new Set(all.map(l=>l.loc)).size;
+    }
+    function renderLinks(){
+        const q=(document.getElementById("lkSearch").value||"").trim().toLowerCase();
+        const fs=document.getElementById("lkStatus").value, fr=document.getElementById("lkRegion").value, fg=document.getElementById("lkGroup").value;
+        const list=getLinks().filter(l=>{
+            if(fs&&l.status!==fs) return false;
+            if(fr&&l.loc!==fr) return false;
+            if(fg&&l.rg!==fg) return false;
+            if(!q) return true;
+            return (l.name+" "+l.url+" "+(l.desc||"")+" "+l.rg+" "+l.loc+" "+l.sub+" "+l.subId).toLowerCase().includes(q);
+        });
+        const body=document.getElementById("linksBody"), empty=document.getElementById("linksEmpty");
+        if(list.length===0){ empty.classList.remove("hidden"); body.innerHTML=""; renderStats(); return; }
+        empty.classList.add("hidden");
+        body.innerHTML=list.map(l=>{ const st=STATUS_PILL[l.status]||STATUS_PILL.Stopped;
+            const specRow=(icon,label,valueHtml)=>`<div class="flex items-start gap-3 py-2.5 border-t border-slate-100 first:border-t-0"><div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center shrink-0"><i class="fa-solid ${icon}"></i></div><div class="min-w-0"><p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">${label}</p><div class="text-sm text-slate-700 mt-0.5 break-words">${valueHtml}</div></div></div>`;
+            return `<div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="flex items-start gap-4 min-w-0">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 text-brandBlue flex items-center justify-center shrink-0 text-xl"><i class="fa-solid fa-cube"></i></div>
+                            <div class="min-w-0">
+                                <h3 class="text-xl font-bold text-slate-900 leading-tight break-words">${esc(l.name)}</h3>
+                                <a href="${esc(l.url)}" target="_blank" class="text-base text-brandLight hover:underline font-medium flex items-center gap-1.5 mt-1 break-all"><i class="fa-solid fa-link text-sm"></i><span>${esc(l.url)}</span></a>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${st.cls}"><span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>${esc(l.status)}</span>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed mt-4">${esc(l.desc)||'<span class="italic text-slate-300">No description.</span>'}</p>
+                    <div class="flex items-center gap-2 mt-5">
+                        <button onclick="toggleDetails('${l.id}')" id="btn-${l.id}" class="flex items-center gap-2 text-sm font-semibold text-brandBlue bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-xl transition"><i id="chev-${l.id}" class="fa-solid fa-chevron-down text-xs transition-transform"></i> View more</button>
+                        <a href="${esc(l.url)}" target="_blank" class="flex items-center gap-2 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 px-4 py-2 rounded-xl transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Open</a>
+                        <button onclick="openLinkModal('${l.id}')" class="ml-auto w-9 h-9 rounded-xl text-slate-400 hover:text-brandBlue hover:bg-slate-100 flex items-center justify-center transition" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                    </div>
+                    <div id="details-${l.id}" class="hidden mt-4 pt-4 border-t border-slate-100">
+                        ${specRow("fa-layer-group","Resource Group",esc(l.rg))}
+                        ${specRow("fa-signal","Status",`<span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>${esc(l.status)}</span>`)}
+                        ${specRow("fa-location-dot","Location",esc(l.loc))}
+                        ${specRow("fa-folder-tree","Subscription",esc(l.sub))}
+                        ${specRow("fa-fingerprint","Subscription ID",`<button onclick="copyText('${esc(l.subId)}','Subscription ID')" class="mono text-sm text-slate-600 hover:text-brandBlue flex items-center gap-2" title="Copy"><span class="break-all">${esc(l.subId)}</span><i class="fa-regular fa-copy text-slate-300"></i></button>`)}
+                    </div>
+                </div>
+            </div>`;
+        }).join("");
+        renderStats();
+    }
+    function toggleDetails(id){ const box=document.getElementById("details-"+id); const btn=document.getElementById("btn-"+id); const open=box.classList.toggle("hidden")===false; if(open){ btn.innerHTML='<i class="fa-solid fa-chevron-down text-xs rotate-180 transition-transform"></i> View less'; } else { btn.innerHTML='<i class="fa-solid fa-chevron-down text-xs transition-transform"></i> View more'; } }
+
+    function openLinkModal(id){
+        populateFilters();
+        document.getElementById("lkNameErr").classList.add("hidden");
+        if(id){ const l=getLinks().find(x=>x.id===id); document.getElementById("linkModalTitle").textContent="Edit Resource";
+            document.getElementById("lkId").value=l.id; document.getElementById("lkName").value=l.name; document.getElementById("lkUrl").value=l.url; document.getElementById("lkDesc").value=l.desc||""; document.getElementById("lkRg").value=l.rg; document.getElementById("lkStatusIn").value=l.status; document.getElementById("lkLoc").value=l.loc; document.getElementById("lkSub").value=l.sub; document.getElementById("lkSubId").value=l.subId;
+            document.getElementById("lkDeleteBtn").classList.remove("hidden");
+        } else { document.getElementById("linkModalTitle").textContent="Add Resource"; ["lkId","lkName","lkUrl","lkDesc","lkRg","lkLoc","lkSub","lkSubId"].forEach(i=>document.getElementById(i).value=""); document.getElementById("lkStatusIn").value="Running"; document.getElementById("lkDeleteBtn").classList.add("hidden"); }
+        document.getElementById("linkModal").classList.remove("hidden");
+    }
+    function closeLinkModal(){ document.getElementById("linkModal").classList.add("hidden"); }
+    function saveLink(){
+        const name=document.getElementById("lkName").value.trim();
+        if(!name){ document.getElementById("lkNameErr").classList.remove("hidden"); return; }
+        const id=document.getElementById("lkId").value;
+        const data={ name, url:document.getElementById("lkUrl").value.trim(), desc:document.getElementById("lkDesc").value.trim(), rg:document.getElementById("lkRg").value.trim()||"—", status:document.getElementById("lkStatusIn").value, loc:document.getElementById("lkLoc").value.trim()||"—", sub:document.getElementById("lkSub").value.trim()||"—", subId:document.getElementById("lkSubId").value.trim()||"—" };
+        let links=getLinks();
+        if(id){ links=links.map(l=>l.id===id?{...l,...data}:l); toast("Resource updated."); }
+        else { links.unshift({id:uid(),...data}); toast("Resource added."); }
+        setLinks(links); closeLinkModal(); populateFilters(); renderLinks();
+    }
+    function deleteLink(){ const id=document.getElementById("lkId").value; if(!id) return; if(!confirm("Remove this resource?")) return; setLinks(getLinks().filter(l=>l.id!==id)); closeLinkModal(); populateFilters(); renderLinks(); toast("Resource removed.","fa-trash"); }
+    document.getElementById("linkModal").addEventListener("click", e=>{ if(e.target.id==="linkModal") closeLinkModal(); });
+
+    ["creation","password","search","dashboard"].forEach(renderEmpty);
+    populateFilters(); renderLinks();
+    const hash=(location.hash||"").replace("#","");
+    showTab(TABS[hash]?hash:"creation");
+</script>
+</body>
+</html>
